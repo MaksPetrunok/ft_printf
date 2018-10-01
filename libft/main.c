@@ -12,7 +12,7 @@ int	main()
 			x += y;
 		y /= 10;
 	}
-	
+/*	
 	printf("x = %ld\n", x);
 
 	printf("-------------------------------\n");
@@ -47,12 +47,13 @@ int	main()
 	printf("%s\n", ft_ultoa_base(18446744073709551615, 2, 1));
 	printf("%s\n", ft_ultoa_base(0, 2, 1));
 
-
+*/
 	printf("-------- ft_dtoa ----------\n");
-	printf("%s\n", ft_dtoa(22.895));
-	printf("%s\n", ft_dtoa(0.895));
-	printf("%s\n", ft_dtoa(25.0));
-	printf("%.20f\n", 22.895);
+	printf("%s\n", ft_dtoa(0.895, 20));
+	printf("%s\n", ft_dtoa(25.0, 20));
+	printf("%s\n", ft_dtoa(29.895, 6));
+	printf("%.6f\n", 29.895);
 
+//	system("leaks a.out");
 	return (0);
 }
