@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/01 16:13:17 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/01 22:54:17 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,22 @@ void	parse_arg(const char *fmt, va_list *ap, char **str)
 		*str = "%";
 	if (*fmt == 's')
 		*str = va_arg(*ap, char *);
+	if (*fmt == 'd')
+		*str = ft_ltoa_base((long int)va_arg(*ap, int), 10, 0);
+	if (*fmt == 'o')
+		*str = ft_ltoa_base((long int)va_arg(*ap, int), 8, 0);
+	if (*fmt == 'x')
+		*str = ft_ltoa_base((long int)va_arg(*ap, int), 16, 0);
+	if (*fmt == 'X')
+		*str = ft_ltoa_base((long int)va_arg(*ap, int), 16, 1);
+	if (*fmt == 'b') // BONUS
+		*str = ft_ltoa_base((long int)va_arg(*ap, int), 2, 0);
+	if (*fmt == 'f')
+		*str = ft_dtoa((double)va_arg(*ap, double), 6);
 
 }
 
-void	print_arg(const char **fmt, va_list *ap, int *count)
+void	print_arg(const char **fmt, va_list *ap, size_t *count)
 {
 	char	*argstr;
 	int		len;
@@ -37,7 +49,7 @@ void	print_arg(const char **fmt, va_list *ap, int *count)
 
 int		ft_printf(const char *fmt, ...)
 {
-	int		count;
+	size_t	count;
 	va_list	ap;
 
 	count = 0;
