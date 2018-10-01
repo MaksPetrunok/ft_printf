@@ -9,6 +9,7 @@
 
 int		main()
 {
+/*
 	printf("%ld\n", "s");
 
 	printf("%%\n");
@@ -30,5 +31,14 @@ int		main()
 
 
 	printf("%1$hhwd\n", 42);
+	printf("----------------------------\n");
+*/
+	printf("%1$d, %2$s, %2$s, %3$s\n", 0, "S", "!");
+	printf("%1$d, %2$c, %2$s, %3$s\n", 0, "S", "!");
+	printf("%1$d, %2$c, %2$d, %3$s\n", 0, 378, "!");
+	
+//system("leaks a.out");
+
+//	printf("%d\n", (char)378);
 	return (0);
 }

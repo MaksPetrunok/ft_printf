@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/09/28 13:51:02 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/01 16:13:17 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 #include <unistd.h>
 #include "./libft/libft.h"
 
-void	parse_arg(const char **fmt, va_list *ap, char *str)
+void	parse_arg(const char *fmt, va_list *ap, char **str)
 {
+	if (*fmt == '%')
+		*str = "%";
+	if (*fmt == 's')
+		*str = va_arg(*ap, char *);
 
 }
 
@@ -24,13 +28,10 @@ void	print_arg(const char **fmt, va_list *ap, int *count)
 	char	*argstr;
 	int		len;
 
-	if (*(*fmt + 1) == '%')
-		argstr = "%";
-	else
-		parse_arg(fmt, ap, argstr);
+	parse_arg(*fmt + 1, ap, &argstr);
 	len = ft_strlen(argstr);
 	count += len;
-	*fmt += len + 1;
+	*fmt += 2; //count actual number of sumbols used as arguments
 	write(1, argstr, len);
 }
 

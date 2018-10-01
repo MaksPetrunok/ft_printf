@@ -6,7 +6,7 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/25 18:27:37 by mpetruno          #+#    #+#              #
-#    Updated: 2018/06/18 20:59:23 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/10/01 20:16:42 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,10 @@ FUNC_LIST = memset \
 			lstdel \
 			lstadd \
 			lstiter \
-			lstmap
+			lstmap \
+			ltoa_base \
+			ultoa_base \
+			dtoa
 
 SRC_LIST = $(addsuffix .c, $(addprefix ft_, $(FUNC_LIST)))
 
