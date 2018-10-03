@@ -33,10 +33,20 @@ int		main()
 	printf("%1$hhwd\n", 42);
 	printf("----------------------------\n");
 */
-	printf("%1$d, %2$s, %2$s, %3$s\n", 0, "S", "!");
-	printf("%1$d, %2$c, %2$s, %3$s\n", 0, "S", "!");
-	printf("%1$d, %2$c, %2$d, %3$s\n", 0, 378, "!");
-	
+
+	char *p = "Pointer";
+	printf("%$d\n", 1);
+	printf("---------\n%1$d, %2$s, %2$s, %3$s\n\n", 0, "S");
+//	printf("%1$d, %2$c, %2$s, %3$s\n", 0, "S", "!");
+//	printf("%1$d, %2$c, %2$d, %3$s\n", 0, 378, "!");
+	printf("-------------------\n");
+	printf("zero padding (%%03d): %03d\n", 15);
+	printf("zero padding (%%03d): %03d\n", 15342);
+	printf("zero padding (%%03d): %03d\n", -15);
+	printf("zero padding (%%04d): %03d\n", -15);
+	printf("zero padding (%%04d): %010s\n", "STRING");
+	printf("optional precision: %.5hhd\n", 155);
+	printf("optional precision: %2.4f\n", 15.1);
 //system("leaks a.out");
 
 //	printf("%d\n", (char)378);

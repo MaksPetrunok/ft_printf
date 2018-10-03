@@ -6,15 +6,18 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/01 22:54:17 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/03 17:38:41 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <unistd.h>
-#include "./libft/libft.h"
+// BONUSES DONE:
+// 1. %b - for bynary conversion
 
-void	parse_arg(const char *fmt, va_list *ap, char **str)
+#include "ft_printf.h"
+
+#include <stdio.h> //REMOVE ME
+/*
+static void	parse_arg(const char *fmt, va_list *ap, char **str)
 {
 	if (*fmt == '%')
 		*str = "%";
@@ -32,33 +35,64 @@ void	parse_arg(const char *fmt, va_list *ap, char **str)
 		*str = ft_ltoa_base((long int)va_arg(*ap, int), 2, 0);
 	if (*fmt == 'f')
 		*str = ft_dtoa((double)va_arg(*ap, double), 6);
+}
+*/
 
+void	free_arglist(t_list arg_list)
+{
 }
 
-void	print_arg(const char **fmt, va_list *ap, size_t *count)
+static size_t	print_arg(t_fmarg arg)
 {
-	char	*argstr;
-	int		len;
-
-	parse_arg(*fmt + 1, ap, &argstr);
-	len = ft_strlen(argstr);
-	count += len;
-	*fmt += 2; //count actual number of sumbols used as arguments
-	write(1, argstr, len);
+	return (0);
 }
 
-int		ft_printf(const char *fmt, ...)
+/* Parse argument starting from *fmt (**fmt == '%', begining of argument descr).
+ * Set *fmt to the next character in the string after parsed argument.
+ * Use *ap list to pull argument value.
+ * Return number of printed symbols.
+ */
+
+size_t			process_arg(char **str, va_list *ap, t_avlist *av)
 {
-	size_t	count;
-	va_list	ap;
+	t_fmarg	arg;
+printf("LIST = %p\n", av);
+	arg.data = get_arg_data(get_arg_num(str), ap, av);
+	printf("Before reading data\n");
+	printf("argument value: %p\n", arg.data);
+	printf("after reading\n");
+
+	printf("\n******* NEW Arg ********* %s\n", *str);
+	printf(" > Argument number: %d\n", get_arg_num(str));
+	printf(" > Remaining string: %s", *str);
+	while (**str != 'd')
+		*str = *str + 1;
+	*str = *str + 1;
+
+//	arg = parse_arg();
+	return (print_arg(arg));
+}
+
+
+
+int				ft_printf(const char *fmt, ...)
+{
+	size_t		count;
+	va_list		ap;
+	t_avlist	*av; // reserves pointers to all argument data
+	char		*arg;
 
 	count = 0;
+	av = 0;
 	va_start(ap, fmt);
-	while (*fmt)
-		if (*fmt == '%')
-			print_arg(&fmt, &ap, &count);
-		else
-			count += write(1, fmt++, 1);
-	va_end(ap);
+	while ((arg = ft_strchr(fmt, '%')))
+	{
+		if (fmt != arg)
+			count += write(1, fmt, ABS((fmt - arg)));
+		count += process_arg(&arg, &ap, av);
+		fmt = arg;
+	}
+	count += write(1, fmt, ft_strlen((char *)fmt));
+//	free_arglist(arg_list);
 	return (count);
 }
