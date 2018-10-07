@@ -38,14 +38,7 @@ static void	parse_arg(const char *fmt, va_list *ap, char **str)
 }
 */
 
-void	free_arglist(t_list arg_list)
-{
-}
 
-static size_t	print_arg(t_fmarg arg)
-{
-	return (0);
-}
 
 /* Parse argument starting from *fmt (**fmt == '%', begining of argument descr).
  * Set *fmt to the next character in the string after parsed argument.
@@ -53,46 +46,93 @@ static size_t	print_arg(t_fmarg arg)
  * Return number of printed symbols.
  */
 
-size_t			process_arg(char **str, va_list *ap, t_avlist *av)
+void			initialize_fmarg(t_fmarg *arg)
 {
-	t_fmarg	arg;
-printf("LIST = %p\n", av);
-	arg.data = get_arg_data(get_arg_num(str), ap, av);
-	printf("Before reading data\n");
-	printf("argument value: %p\n", arg.data);
-	printf("after reading\n");
-
-	printf("\n******* NEW Arg ********* %s\n", *str);
-	printf(" > Argument number: %d\n", get_arg_num(str));
-	printf(" > Remaining string: %s", *str);
-	while (**str != 'd')
-		*str = *str + 1;
-	*str = *str + 1;
-
-//	arg = parse_arg();
-	return (print_arg(arg));
+	arg->flags = 0;
+	arg->width = 0;
+	arg->precision = 6;
+	arg->lengthmod = '\0';
+	arg->type = '\0';
 }
 
+void			parse_flags(char **str, t_fmarg *arg)
+{
+	char	*tmp;
+	char	*fl;
 
+	fl = FLAGS;
+	while ((tmp = ft_strchr(fl, **str)) != 0)
+	{
+		arg->flags = arg->flags | (1 << (int)(ABS((tmp - fl))));
+		(*str)++;
+	}
+	if (**str >= '0' && **str <= '9')
+		arg->width = ft_atoi(*str);
+	while (**str >= '0' && **str <= '9')
+		(*str)++;
+//printf("Before parsing precision str=%s\n", *str);
+	if (**str == '.')
+		arg->precision = ft_atoi(++(*str));
+	while (**str >= '0' && **str <= '9')
+		(*str)++;
+}
+
+size_t	print_arg(t_fmarg *arg, va_list *ap)
+{
+	char	*fl;
+	int		i;
+
+	i = 0;
+	fl = FLAGS;
+printf("flags = %d\n", arg->flags);
+	if (arg->flags > 0)
+		printf("parsed flags: ");
+	else
+		printf("No flags found\n");
+	while (arg->flags > 0)
+	{
+		if (arg->flags & 1 == 1)
+			printf("%c", *(fl + i));
+		arg->flags = arg->flags >> 1;
+//printf(">>>>> %d\n", arg->flags);
+		i++;
+	}
+	printf("\n");
+	return (0);
+}
+
+size_t			process_arg(char **str, va_list *ap)
+{
+	t_fmarg	arg;
+
+	*str = *str + 1;
+	initialize_fmarg(&arg);
+	parse_flags(str, &arg);
+
+	printf("flags = %d\n", arg.flags);
+	printf("width = %d\n", arg.width);
+	printf("precision = %d\n", arg.precision);
+	printf("data type = %c\n", arg.type);
+	*str = *str + 2;
+	return (print_arg(&arg, ap));
+}
 
 int				ft_printf(const char *fmt, ...)
 {
 	size_t		count;
 	va_list		ap;
-	t_avlist	*av; // reserves pointers to all argument data
 	char		*arg;
 
 	count = 0;
-	av = 0;
 	va_start(ap, fmt);
 	while ((arg = ft_strchr(fmt, '%')))
 	{
 		if (fmt != arg)
 			count += write(1, fmt, ABS((fmt - arg)));
-		count += process_arg(&arg, &ap, av);
+		count += process_arg(&arg, &ap);
 		fmt = arg;
 	}
-	count += write(1, fmt, ft_strlen((char *)fmt));
-//	free_arglist(arg_list);
+	count += write(1, fmt, ft_strlen(fmt));
+	va_end(ap);
 	return (count);
 }

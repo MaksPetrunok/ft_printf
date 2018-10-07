@@ -4,9 +4,9 @@ int	ft_printf(const char *fmt, ...);
 int main(int ac, char **av)
 {
 //	printf("\t\t- %d\n", ft_printf("Simple string."));
-ft_printf("Before\n%12$d\n", "42");
-ft_printf("No number %d\n", 24);
-ft_printf("Complex %d, %-3$d\n", 12, 24, 42);
+ft_printf("Before\n %#+00-+0 '8d\n", 42);
+//ft_printf("No number %d\n", 24);
+//ft_printf("Complex %d, %-3$d\n", 12, 24, 42);
 	/*
 	ft_printf("String with %% symbol\n");
 	ft_printf("String with %s string\n", "INSIDE");

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <locale.h>
 
 /*
  * printf usage:
@@ -34,9 +35,11 @@ int		main()
 	printf("----------------------------\n");
 */
 
-	char *p = "Pointer";
-	printf("%$d\n", 1);
-	printf("---------\n%1$d, %2$s, %2$s, %3$s\n\n", 0, "S");
+	setlocale(LC_NUMERIC, "");
+	//printf("%'d\n\n\n", 42005);	
+
+	printf("%5f\n", 42.006);
+/*	printf("---------\n%1$d, %2$s, %2$s, %3$s\n\n", 0, "S");
 //	printf("%1$d, %2$c, %2$s, %3$s\n", 0, "S", "!");
 //	printf("%1$d, %2$c, %2$d, %3$s\n", 0, 378, "!");
 	printf("-------------------\n");
@@ -48,7 +51,7 @@ int		main()
 	printf("optional precision: %.5hhd\n", 155);
 	printf("optional precision: %2.4f\n", 15.1);
 //system("leaks a.out");
-
+*/
 //	printf("%d\n", (char)378);
 	return (0);
 }

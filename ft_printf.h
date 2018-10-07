@@ -18,6 +18,8 @@
 #define FLAGS_NUMBER 6
 
 #define ABS(X) (X < 0) ? -X : X
+#define MAX(A, B) (A > B) ? A : B
+#define	FLAGS "#0- +'"
 
 typedef struct	s_avlist
 {
@@ -29,7 +31,7 @@ typedef struct	s_avlist
 typedef struct	s_fmarg
 {
 	void		*data;
-	char		flags[FLAGS_NUMBER + 1];
+	char		flags; /* '+ -0# --> 00111111 */
 	int			width;
 	int			precision;
 	char		lengthmod;

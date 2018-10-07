@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h> //remove me
 
 int		get_arg_num(char **fmt)
 {

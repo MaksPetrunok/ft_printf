@@ -1,1 +1,1 @@
-gcc main.c ft_printf.c arg_numbering.c ./libft/libft.a
+gcc main.c ft_printf.c ./libft/libft.a
