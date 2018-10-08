@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 16:30:51 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/01 19:34:43 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/08 20:39:25 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 #include "libft.h"
 
-char	*ft_ltoa_base(long int n, int base, int capital)
+void	ft_ltoa_base(long int n, int base, int capital, char *new_buff)
 {
 	char	*symbols;
 	char	buff[65];
@@ -41,5 +41,9 @@ char	*ft_ltoa_base(long int n, int base, int capital)
 	}
 	if (negative)
 		buff[i--] = '-';
-	return (ft_strdup(&buff[i + 1]));
+	index = 0;
+	while (buff[++i])
+		new_buff[index++] = buff[i];
+	new_buff[index] = 0;
+//	return (ft_strdup(&buff[i + 1]));
 }

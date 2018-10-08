@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 19:38:45 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/01 22:29:35 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/08 20:42:31 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static int	get_float_str(double n, char *buff, int precision)
 	return (0);
 }
 
-char		*ft_dtoa(double n, int precision)
+void		ft_dtoa(double n, int precision, char *buff)
 {
 	long int	integer;
-	char		*s_int;
+	char		s_int[65];
 	char		*s_float;
 	char		*res;
 
@@ -55,9 +55,11 @@ char		*ft_dtoa(double n, int precision)
 		s_float = "";
 	if (get_float_str(n - (double)integer, s_float, precision))
 		integer++;
-	s_int = ft_ltoa_base(integer, 10, 0);
+	ft_ltoa_base(integer, 10, 0, s_int);
 	res = ft_strjoin(s_int, s_float);
-	free((void *)s_int);
 	free((void *)s_float);
-	return (res);
+	s_float = res;
+	while (res)
+		*buff++ = *res;
+//	return (res);
 }

@@ -3,8 +3,10 @@
 
 int main()
 {
-	ft_printf("Before\n %+lld\n", 42);
-
+	ft_printf(", Count = %d\n", 
+		ft_printf("Before %d, bynary 9 = %b, and finally %% sign.", 42, 9));
+	ft_printf(", Count = %d\n",
+		ft_printf("Two args: first - % +hhd, second - %010-jx.", 42, 255));
 //	printf("\t\t- %d\n", ft_printf("Simple string."));
 //ft_printf("No number %d\n", 24);
 //ft_printf("Complex %d, %-3$d\n", 12, 24, 42);

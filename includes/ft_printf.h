@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/03 13:27:00 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/08 16:12:43 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/08 19:20:46 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define MAX(A, B) (A > B) ? A : B
 
 # define FLAGS "#0- +'"
-# define TYPES "sSpdDioOuUxXcC"
+# define TYPES "sSpdDioOuUxXcCb%"
 
 typedef struct	s_avlist
 {
@@ -31,13 +31,25 @@ typedef struct	s_avlist
 	void		*next;
 }				t_avlist;
 
+typedef enum	e_len_mod
+{
+	emp = 0,
+	hh = 1,
+	ll = 2,
+	h = 3,
+	l = 4,
+	j = 5,
+	z = 6,
+	L = 7,
+}				t_lm;
+
 typedef struct	s_fmarg
 {
 	void		*data;
 	char		flags; /* '+ -0# --> 00111111 */
 	int			width;
 	int			precision;
-	char		lengthmod[4];
+	t_lm		lengthmod;
 	char		type;
 }				t_fmarg;
 
