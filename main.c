@@ -1,10 +1,11 @@
-int	ft_printf(const char *fmt, ...);
 #include <stdio.h>
+#include "./includes/ft_printf.h"
 
-int main(int ac, char **av)
+int main()
 {
+	ft_printf("Before\n %+lld\n", 42);
+
 //	printf("\t\t- %d\n", ft_printf("Simple string."));
-ft_printf("Before\n %#+00-+0 '8d\n", 42);
 //ft_printf("No number %d\n", 24);
 //ft_printf("Complex %d, %-3$d\n", 12, 24, 42);
 	/*

@@ -6,7 +6,7 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/25 18:27:37 by mpetruno          #+#    #+#              #
-#    Updated: 2018/10/01 20:16:42 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/10/08 14:29:15 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,12 @@ OBJ_LIST = $(addsuffix .o, $(addprefix ft_, $(FUNC_LIST)))
 all: $(NAME)
 
 $(NAME): $(OBJ_LIST)
-	ar -r $(NAME) $(OBJ_LIST)
+	@echo "Compiling libft..."
+	@ar -r $(NAME) $(OBJ_LIST)
+	@ranlib $(NAME)
+
+%.o: %.c
+	@$(CC) -c $^ $(FLAGS)
 
 clean:
 	rm -f $(OBJ_LIST)
@@ -97,5 +102,3 @@ fclean: clean
 
 re: fclean all
 
-%.o: %.c
-	$(CC) -c $^ $(FLAGS)

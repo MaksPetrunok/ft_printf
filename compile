@@ -1,1 +1,2 @@
-gcc main.c ft_printf.c ./libft/libft.a
+make
+gcc main.c libftprintf.a

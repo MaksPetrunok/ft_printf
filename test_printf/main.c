@@ -10,6 +10,7 @@
 
 int		main()
 {
+	printf("%+-10.3d\n", 342);
 /*
 	printf("%ld\n", "s");
 
@@ -35,10 +36,9 @@ int		main()
 	printf("----------------------------\n");
 */
 
-	setlocale(LC_NUMERIC, "");
+//	setlocale(LC_NUMERIC, "");
 	//printf("%'d\n\n\n", 42005);	
 
-	printf("%5f\n", 42.006);
 /*	printf("---------\n%1$d, %2$s, %2$s, %3$s\n\n", 0, "S");
 //	printf("%1$d, %2$c, %2$s, %3$s\n", 0, "S", "!");
 //	printf("%1$d, %2$c, %2$d, %3$s\n", 0, 378, "!");

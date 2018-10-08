@@ -6,21 +6,58 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/05 15:07:08 by mpetruno          #+#    #+#              #
-#    Updated: 2018/09/05 15:10:38 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/10/08 15:21:47 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-FILES = xxx.c \
-		yyy.c
+FLAGS = -Wall -Werror -Wextra
 
-all
+CC = gcc
 
-clean
+SRC_DIR = ./src/
 
-fclean
+OBJ_DIR = ./obj/
 
-re
+INC_DIR = ./includes/
+
+LIBFT_DIR = ./libft/
+
+LIB = ./libft/libft.a
+
+HEADER = $(INC_DIR)ft_printf.h
+
+FILES = ft_printf.c \
+		parsing.c \
+		print_arg.c
+
+SRC_FILES = $(addprefix $(SRC_DIR), $(FILES))
+
+OFILES = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
+
+all: $(NAME)
+
+$(NAME): $(LIB) $(HEADER) $(OFILES)
+	@ar rc $(NAME) $(OFILES) $(LIBFT_DIR)*.o
+	@ranlib $(NAME)
+	@echo "libftprintf.a - DONE."
+
+$(LIB):
+	@echo "Compiling libft..."
+	@make -C $(LIBFT_DIR) all --silent
+	@echo "Libft compiling done."
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(FLAGS) -I $(INC_DIR) -c $< -o $@
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
 
 .PHONY = all clean fclean re
