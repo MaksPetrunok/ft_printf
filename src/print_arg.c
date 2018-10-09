@@ -22,39 +22,52 @@ static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 		*str = va_arg(*ap, char *);
 	
 }
-
-static void	arg_to_str_n(t_fmarg *arg, va_list *ap, char *buff)
+/*
+static void	arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff)
 {
 	if (arg->type == 'd')
 		ft_ltoa_base((long int)va_arg(*ap, int), 10, 0, buff);
-	if (arg->type == 'o')
-		ft_ltoa_base((long int)va_arg(*ap, int), 8, 0, buff);
-	if (arg->type == 'x')
-		ft_ltoa_base((long int)va_arg(*ap, int), 16, 0, buff);
-	if (arg->type == 'X')
-		ft_ltoa_base((long int)va_arg(*ap, int), 16, 1, buff);
-	if (arg->type == 'b') // BONUS
-		ft_ltoa_base((long int)va_arg(*ap, int), 2, 0, buff);
-	if (arg->type == 'f')
-		ft_dtoa((double)va_arg(*ap, double), 6, buff);
 }
 
+static void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
+{
+	if (arg->type == 'o')
+		ft_ltoa_base((long int)va_arg(*ap, int), 8, 0, buff);
+	else if (arg->type == 'x')
+		ft_ltoa_base((long int)va_arg(*ap, int), 16, 0, buff);
+	else if (arg->type == 'X')
+		ft_ltoa_base((long int)va_arg(*ap, int), 16, 1, buff);
+}
+
+static void	arg_to_str_bf(t_fmarg *arg, va_list *ap, char *buff)
+{
+	if (arg->type == 'b') // BONUS
+		ft_ltoa_base((long int)va_arg(*ap, int), 2, 0, buff);
+	else if (arg->type == 'f')
+		ft_dtoa((double)va_arg(*ap, double), 6, buff);
+}
+*/
 int			print_arg(t_fmarg *arg, va_list *ap)
 {
 	char	*str;
 	char	buff[65];
+	int		count;
+	int		len;
 
+	count = 0;
 	if (arg->type == '%')
-		return (write(1, "%", 1));
-	else if (arg->type == 's' || arg->type == 'c' ||
-		arg->type == 'S' || arg->type == 'C')
-	{
+		str = "%";
+	else if (ft_strchr("sScC", arg->type))
 		arg_to_str_s(arg, ap, &str);
-		return (write(1, str, ft_strlen(str)));
-	}
-	else
-	{
-		arg_to_str_n(arg, ap, buff);
-		return (write(1, str, ft_strlen(buff)));
-	}
+	else if (ft_strchr("di", arg->type))
+		arg_to_str_di(arg, ap, str = buff);
+	else if (ft_strchr("ouxX", arg->type))
+		arg_to_str_ouxX(arg, ap, str = buff);
+	else if (ft_strchr("bf", arg->type))
+		arg_to_str_bf(arg, ap, str = buff);
+	len = ft_strlen(str);
+//	count += print_prefix();
+	count += write(1, str, len);
+//	count += print_suffix();
+	return (count);
 }

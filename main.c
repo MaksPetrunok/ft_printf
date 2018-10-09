@@ -3,6 +3,7 @@
 
 int main()
 {
+	ft_printf("42 should be here: %d\n", 42);
 	ft_printf(", Count = %d\n", 
 		ft_printf("Before %d, bynary 9 = %b, and finally %% sign.", 42, 9));
 	ft_printf(", Count = %d\n",

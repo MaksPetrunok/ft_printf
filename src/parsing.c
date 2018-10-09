@@ -28,9 +28,15 @@ static void	parse_length(char **str, t_fmarg *arg)
 		arg->lengthmod = j;
 	else if (**str == 'z')
 		arg->lengthmod = z;
-	if (arg->lengthmod)
+	if (arg->lengthmod > 0)
 		*str += (arg->lengthmod > 2) ? 1 : 2;
-	arg->type = *(*str)++;
+	arg->type = **str;
+	*str = *str + 1;
+	if (ft_strchr("DOUCS", arg->type) != 0)
+	{
+		arg->type = ft_tolower(arg->type);
+		arg->lengthmod = MAX(arg->lengthmod, l);
+	}
 }
 
 void		parse_flags(char **str, t_fmarg *arg)

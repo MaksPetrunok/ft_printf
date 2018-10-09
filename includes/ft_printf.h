@@ -56,6 +56,10 @@ typedef struct	s_fmarg
 int				ft_printf(const char *fmt, ...);
 int				print_arg(t_fmarg *arg, va_list *ap);
 void			parse_flags(char **str, t_fmarg *arg);
+void			arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff);
+void			arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff);
+void			arg_to_str_bf(t_fmarg *arg, va_list *ap, char *buff);
+
 
 //int				get_arg_num(char **fmt);
 //void			*get_arg_data(int id, va_list *ap, t_avlist *av);

@@ -35,13 +35,13 @@ static int	process_arg(char **str, va_list *ap)
 	*str = *str + 1;
 	initialize_fmarg(&arg);
 	parse_flags(str, &arg);
-/*
-	printf("flags = %d\n", arg.flags);
+
+	printf("\n===============\nflags = %d\n", arg.flags);
 	printf("width = %d\n", arg.width);
 	printf("precision = %d\n", arg.precision);
 	printf("length mod = %d\n", arg.lengthmod);
-	printf("data type = %c\n", arg.type);
-*/
+	printf("data type = %c\n======================\n", arg.type);
+
 	return (print_arg(&arg, ap));
 }
 
