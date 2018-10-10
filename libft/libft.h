@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 18:27:52 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/08 20:38:53 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/10 14:19:43 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-void				ft_ltoa_base(long int n, int base, int capital, char *buff);
-char				*ft_ultoa_base(unsigned long int n, int base, int capital);
+void				ft_lltoa_base(long long int n, int base, int capital, char *buff);
+void				ft_ulltoa_base(unsigned long long int n, int base, int capital,
+						char *buff);
 void				ft_dtoa(double n, int precision, char *buff);
 #endif

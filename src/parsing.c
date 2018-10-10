@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:32:12 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/08 19:49:04 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/10 15:47:08 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,14 @@ void		parse_flags(char **str, t_fmarg *arg)
 {
 	char	*tmp;
 	char	*fl;
+	int		i;
 
 	fl = FLAGS;
+	i = 0;
 	while ((tmp = ft_strchr(fl, **str)) != 0)
 	{
-		arg->flags = arg->flags | (1 << (int)(ABS((tmp - fl))));
+		if (ft_strchr(arg->flags, **str) == 0)
+			arg->flags[i++] = **str;
 		if (**str == '0' || **str == '-')
 		{
 			arg->width = ft_atoi(++(*str));

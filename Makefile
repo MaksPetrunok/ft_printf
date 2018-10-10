@@ -6,7 +6,7 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/05 15:07:08 by mpetruno          #+#    #+#              #
-#    Updated: 2018/10/08 21:00:07 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/10/10 15:00:03 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 
 clean:
 	rm -rf $(OBJ_DIR)
+	make -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)

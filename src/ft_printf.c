@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/08 20:35:25 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/10 16:31:33 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,13 @@
 
 static void	initialize_fmarg(t_fmarg *arg)
 {
-	arg->flags = 0;
+	int	i;
+
+	i = 0;
+	while (i < 6)
+		arg->flags[i++] = '\0';
 	arg->width = 0;
-	arg->precision = 6;
+	arg->precision = -1;
 	arg->lengthmod = emp;
 	arg->type = '\0';
 }
@@ -36,7 +40,7 @@ static int	process_arg(char **str, va_list *ap)
 	initialize_fmarg(&arg);
 	parse_flags(str, &arg);
 
-	printf("\n===============\nflags = %d\n", arg.flags);
+	printf("\n===============\nflags = %s\n", arg.flags);
 	printf("width = %d\n", arg.width);
 	printf("precision = %d\n", arg.precision);
 	printf("length mod = %d\n", arg.lengthmod);
