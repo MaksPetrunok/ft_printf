@@ -31,7 +31,8 @@ HEADER = $(INC_DIR)ft_printf.h
 FILES = ft_printf.c \
 		parsing.c \
 		print_arg.c \
-		arg_to_str_n.c
+		arg_to_str_n.c \
+		print_nums.c
 
 SRC_FILES = $(addprefix $(SRC_DIR), $(FILES))
 

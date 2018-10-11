@@ -12,7 +12,7 @@
 
 #include "libft.h"
 #include <stdlib.h>
-
+#include <stdio.h> //remove me
 static int	get_float_str(double n, char *buff, int precision)
 {
 	int		i;
@@ -46,20 +46,27 @@ void		ft_dtoa(double n, int precision, char *buff)
 {
 	long int	integer;
 	char		s_int[65];
-	char		*s_float;
+	char		s_float[65];
 	char		*res;
 
 	precision = (precision < 0) ? 0 : precision;
-	integer = (long int)n;
-	if ((s_float = (char *)malloc(precision + 2)) == 0)
-		s_float = "";
+	integer = (long int)(int)n;
+//printf("PASSED ARG = %f\n", n);
 	if (get_float_str(n - (double)integer, s_float, precision))
 		integer++;
 	ft_lltoa_base(integer, 10, 0, s_int);
 	res = ft_strjoin(s_int, s_float);
-	free((void *)s_float);
-	s_float = res;
-	while (res)
-		*buff++ = *res;
+//printf("INSIDE DTOA\n");
+	//s_float = res;
+//printf("RESULT FLOAT = %s\n", res);
+//printf("INT NUM = %ld\n", integer);
+//printf("INT   = %s\n", s_int);
+//printf("FLOAT = %s\n", s_float);
+	ft_strcpy(buff, res);
+//	while (res)
+//		*buff++ = *res++;
+//	*buff = '\0';
+//printf("RESULT FLOAT = %s\n", buff);
+	free((void *)res);
 //	return (res);
 }

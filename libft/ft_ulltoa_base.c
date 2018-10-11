@@ -31,6 +31,7 @@ void	ft_ulltoa_base(unsigned long long int n, int base, int capital, char *b)
 	i++;
 	while (buff[i])
 		*b++ = buff[i++];
+	*b = '\0';
 //	return (ft_strdup(&buff[i + 1]));
 }
 

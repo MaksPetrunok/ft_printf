@@ -45,8 +45,11 @@ typedef enum	e_len_mod
 
 typedef struct	s_fmarg
 {
-	void		*data;
-	char		flags[6]; /* "+ -0#" --> 00111111 */
+	char		fl_sharp;
+	char		fl_zero;
+	char		fl_minus;
+	char		fl_sp;
+	char		fl_plus;
 	int			width;
 	int			precision;
 	t_lm		lengthmod;
@@ -58,8 +61,13 @@ int				print_arg(t_fmarg *arg, va_list *ap);
 void			parse_flags(char **str, t_fmarg *arg);
 void			arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff);
-void			arg_to_str_bf(t_fmarg *arg, va_list *ap, char *buff);
+void			arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff);
 
+int				print_f(t_fmarg *a, char *s, int len);
+int				print_di(t_fmarg *a, char *s, int len);
+int				print_u(t_fmarg *a, char *s, int len);
+int				print_o(t_fmarg *a, char *s, int len);
+int				print_x(t_fmarg *a, char *s, int len);
 
 //int				get_arg_num(char **fmt);
 //void			*get_arg_data(int id, va_list *ap, t_avlist *av);

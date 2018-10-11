@@ -21,11 +21,11 @@
 
 static void	initialize_fmarg(t_fmarg *arg)
 {
-	int	i;
-
-	i = 0;
-	while (i < 6)
-		arg->flags[i++] = '\0';
+	arg->fl_sharp = 0;
+	arg->fl_zero = 0;
+	arg->fl_minus = 0;
+	arg->fl_sp = 0;
+	arg->fl_plus = 0;
 	arg->width = 0;
 	arg->precision = -1;
 	arg->lengthmod = emp;
@@ -39,13 +39,19 @@ static int	process_arg(char **str, va_list *ap)
 	*str = *str + 1;
 	initialize_fmarg(&arg);
 	parse_flags(str, &arg);
-
-	printf("\n===============\nflags = %s\n", arg.flags);
+/*
+	printf("\n===============\n");
+	printf("fl #  = %d\n", arg.fl_sharp);
+	printf("fl 0  = %d\n", arg.fl_zero);
+	printf("fl +  = %d\n", arg.fl_plus);
+	printf("fl sp = %d\n", arg.fl_sp);
+	printf("fl -  = %d\n", arg.fl_minus);
 	printf("width = %d\n", arg.width);
 	printf("precision = %d\n", arg.precision);
 	printf("length mod = %d\n", arg.lengthmod);
 	printf("data type = %c\n======================\n", arg.type);
-
+*/
+//printf("\nALL DATA PARSED\n");
 	return (print_arg(&arg, ap));
 }
 

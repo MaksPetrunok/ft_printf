@@ -12,7 +12,9 @@
 
 #include "ft_printf.h"
 
-#include <stdio.h>
+#include <stdio.h> // remove me
+#define uintmax_t __uintmax_t
+#define intmax_t long
 
 // sSpdDioOuUxXcC
 // pdDioOuUxX
@@ -55,7 +57,6 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 		val = (size_t)va_arg(*ap, size_t);
 
 	if (arg->type == 'o')
-//make lltoa_base instead of ltoa_base or in addition
 		ft_lltoa_base(val, 8, 0, buff);
 	else if (arg->type == 'u')
 		ft_ulltoa_base(val, 10, 0, buff);
@@ -63,14 +64,18 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 		ft_lltoa_base(val, 16, 0, buff);
 	else if (arg->type == 'X')
 		ft_lltoa_base(val, 16, 1, buff);
+	else if (arg->type == 'b')
+		ft_lltoa_base(val, 2, 0, buff);
 }
 
-void	arg_to_str_bf(t_fmarg *arg, va_list *ap, char *buff)
+void	arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff)
 {
-	if (arg->type == 'b') // BONUS
-		ft_lltoa_base((long int)va_arg(*ap, int), 2, 0, buff);
-	else if (arg->type == 'f')
-		ft_dtoa((double)va_arg(*ap, double), 6, buff);
-	if (arg->type == 'p')
-		ft_lltoa_base((long int)va_arg(*ap, int), 16, 0, buff);
+//printf("\nPRECISION = %d\n", arg->precision);
+	if (arg->precision == -1)
+		arg->precision = 6;
+	ft_dtoa((double)va_arg(*ap, double), arg->precision, buff);
+//printf("STRING VALUE = %s\n", buff);
+//printf("%f, %d, %s\n", va_arg(*ap, double), arg->precision, buff);
+//	else if (arg->type == 'p')
+//		ft_lltoa_base((long int)va_arg(*ap, int), 16, 0, buff);
 }
