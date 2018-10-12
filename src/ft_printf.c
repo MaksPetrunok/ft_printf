@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/10 16:31:33 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/12 19:25:20 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,61 +18,59 @@
 #include "ft_printf.h"
 
 #include <stdio.h> //REMOVE ME
+#define PRINT_FLAGS
 
 static void	initialize_fmarg(t_fmarg *arg)
 {
-	arg->fl_sharp = 0;
-	arg->fl_zero = 0;
-	arg->fl_minus = 0;
-	arg->fl_sp = 0;
-	arg->fl_plus = 0;
+	arg->flags = 0;
 	arg->width = 0;
 	arg->precision = -1;
-	arg->lengthmod = emp;
 	arg->type = '\0';
 }
 
-static int	process_arg(char **str, va_list *ap)
+static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 {
 	t_fmarg	arg;
 
 	*str = *str + 1;
 	initialize_fmarg(&arg);
 	parse_flags(str, &arg);
-/*
+#ifdef PRINT_FLAGS
 	printf("\n===============\n");
-	printf("fl #  = %d\n", arg.fl_sharp);
-	printf("fl 0  = %d\n", arg.fl_zero);
-	printf("fl +  = %d\n", arg.fl_plus);
-	printf("fl sp = %d\n", arg.fl_sp);
-	printf("fl -  = %d\n", arg.fl_minus);
+	printf("fl #  = %d\n", arg.flags & F_HASH);
+	printf("fl 0  = %d\n", arg.flags & F_ZERO);
+	printf("fl +  = %d\n", arg.flags & F_PLUS);
+	printf("fl sp = %d\n", arg.flags & F_SPACE);
+	printf("fl -  = %d\n", arg.flags & F_LEFT);
+	printf("fl '  = %d\n", arg.flags & F_THOU);
 	printf("width = %d\n", arg.width);
 	printf("precision = %d\n", arg.precision);
-	printf("length mod = %d\n", arg.lengthmod);
 	printf("data type = %c\n======================\n", arg.type);
-*/
+#endif
 //printf("\nALL DATA PARSED\n");
-	return (print_arg(&arg, ap));
+	print_arg(&arg, ap, buffer);
 }
 
 int			ft_printf(const char *fmt, ...)
 {
-	size_t		count;
 	va_list		ap;
 	char		*arg;
+	t_outbuff	buffer;
 
-	count = 0;
+	initialize_output_buff(&buffer, 1);
 	va_start(ap, fmt);
 //printf("String to be printed:\n%s\nArguments:\n", fmt);
 	while ((arg = ft_strchr(fmt, '%')))
 	{
 		if (fmt != arg)
-			count += write(1, fmt, ABS((fmt - arg)));
-		count += process_arg(&arg, &ap);
+			append(&buffer, fmt, arg - fmt);
+//			count += write(1, fmt, ABS((fmt - arg)));
+		process_arg(&arg, &ap, &buffer);
 		fmt = arg;
 //printf("\nAFTER PARSING s = %s!!!\n", fmt);
 	}
-	count += write(1, fmt, ft_strlen(fmt));
+	append(&buffer, fmt, -1);
+	flush(&buffer);
 	va_end(ap);
-	return (count);
+	return (buffer.count);
 }

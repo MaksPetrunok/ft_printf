@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/03 13:27:00 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/10 15:34:35 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/12 19:12:01 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,51 +24,61 @@
 # define FLAGS "#0- +"
 # define TYPES "sSpdDioOuUxXcCb%"
 
-typedef struct	s_avlist
-{
-	int			id;
-	void		*data;
-	void		*next;
-}				t_avlist;
+# define NTOA_BUFF_SIZE 65
+# define OUTPUT_BUFF_SIZE 4096
 
-typedef enum	e_len_mod
+# define F_HASH		(1U << 0U)
+# define F_ZERO		(1U << 1U)
+# define F_LEFT		(1U << 2U)
+# define F_SPACE	(1U << 3U)
+# define F_PLUS		(1U << 4U)
+# define F_THOU		(1U << 5U)
+
+# define F_CHAR		(1U << 6U)
+# define F_SHORT	(1U << 7U)
+# define F_LONG		(1U << 8U)
+# define F_LLONG	(1U << 9U)
+# define F_INTMAX	(1U << 10U)
+# define F_SIZE_T	(1U << 11U)
+
+typedef struct s_outbuff t_outbuff;
+struct	s_outbuff
 {
-	emp = 0,
-	hh = 1,
-	ll = 2,
-	h = 3,
-	l = 4,
-	j = 5,
-	z = 6,
-	L = 7,
-}				t_lm;
+	int			fd;
+	int			count;
+	char		buffer[OUTPUT_BUFF_SIZE + 1];
+	char		*end;
+	void		(*flush)(t_outbuff *);
+	void		(*append)(t_outbuff *, const char *, int n);
+};
 
 typedef struct	s_fmarg
 {
-	char		fl_sharp;
-	char		fl_zero;
-	char		fl_minus;
-	char		fl_sp;
-	char		fl_plus;
+	int			flags;
 	int			width;
 	int			precision;
-	t_lm		lengthmod;
 	char		type;
 }				t_fmarg;
 
+void			flush(t_outbuff *buff);
+void			append(t_outbuff *buff, const char *str, int n);
+void			initialize_output_buff(t_outbuff *buff, int fd);
+
 int				ft_printf(const char *fmt, ...);
-int				print_arg(t_fmarg *arg, va_list *ap);
+void			print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer);
 void			parse_flags(char **str, t_fmarg *arg);
 void			arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff);
 
-int				print_f(t_fmarg *a, char *s, int len);
-int				print_di(t_fmarg *a, char *s, int len);
-int				print_u(t_fmarg *a, char *s, int len);
-int				print_o(t_fmarg *a, char *s, int len);
-int				print_x(t_fmarg *a, char *s, int len);
+void			print_f(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_di(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_u(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_o(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_x(t_fmarg *a, char *s, int len, t_outbuff *buffer);
 
+void			pf_ulltoa_base(unsigned long long int n, int base,
+				t_fmarg *fm, char *buff);
 //int				get_arg_num(char **fmt);
 //void			*get_arg_data(int id, va_list *ap, t_avlist *av);
 #endif

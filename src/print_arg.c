@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/10 19:00:41 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/12 18:15:57 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 
+/*
 static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 {
 	if (arg->type == 's' && arg->lengthmod == 0)
@@ -23,35 +24,33 @@ static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 //	printf("!!!!!!!!!!!!! HERE !!!!!!!!!\n");
 //	printf("%s\n", *str)
 }
+*/
 
-static int	print_prefix(t_fmarg *a, char *s, int len)
+static void	print_prefix(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 {
 	if (ft_strchr("di", a->type))
-		return (print_di(a, s, len));
+		print_di(a, s, len, buffer);
 	else if (ft_strchr("o", a->type))
-		return (print_o(a, s, len));
+		print_o(a, s, len, buffer);
 	else if (ft_strchr("fF", a->type))
-		return (print_f(a, s, len));
+		print_f(a, s, len, buffer);
 	else if (ft_strchr("xX", a->type))
-		return (print_x(a, s, len));
+		print_x(a, s, len, buffer);
 	else if (ft_strchr("ubs%", a->type))
-		return (print_u(a, s, len));
-//	else if (ft_strchr("cC%", arg->type))
+		print_u(a, s, len, buffer);
+//	else if (ft_strchr("cC%", a->type))
 //		return (printf_pr_c(a, s, len));
-	return (0);
 }
 
-int			print_arg(t_fmarg *arg, va_list *ap)
+void		print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer)
 {
 	char	*str;
-	char	buff[65];
-	int		count;
+	char	buff[NTOA_BUFF_SIZE];
 	int		len;
 
-	count = 0;
-	if (ft_strchr("sScC", arg->type))
-		arg_to_str_s(arg, ap, &str);
-	else if (ft_strchr("di", arg->type))
+//	if (ft_strchr("sScC", arg->type))
+//		arg_to_str_s(arg, ap, &str);
+	if (ft_strchr("di", arg->type))
 		arg_to_str_di(arg, ap, (str = buff));
 	else if (ft_strchr("ouxXb", arg->type))
 		arg_to_str_ouxX(arg, ap, str = buff);
@@ -60,8 +59,7 @@ int			print_arg(t_fmarg *arg, va_list *ap)
 	else
 		str = "%";
 	len = ft_strlen(str);
-	count += print_prefix(arg, str, len);
+	print_prefix(arg, str, len, buffer);
 //	count += write(1, str, len);
 //	count += print_suffix();
-	return (count);
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "./includes/ft_printf.h"
+#include "./libft/libft.h"
 
 #define intmax_t long
 #define uintmax_t __uintmax_t
@@ -7,6 +8,23 @@
 
 int main()
 {
+	/*
+	t_outbuff out;
+
+	initialize_output_buff(&out, 1);
+	
+	out.append(&out, "string1", 0);
+	flush(&out);
+	out.append(&out, "STring2", 2);
+	out.flush(&out);
+	printf("\nWritten bytes: %d\n", out.count);
+*/
+
+
+	ft_printf("THOUSANDS TEST: %#'u\n", 42000);
+	ft_printf("STRING BEFORE ARGUMENT %llX", 4294967296);
+return 0;
+
 	ft_printf(" = %d\n", ft_printf("0 padding: %+08d, -width: %-8d.", 42, 42));
 	ft_printf(" = %d\n", ft_printf("0 padding: %+8o, -width: %#-8o.", 42, 42));
 	ft_printf(" = %d\n", ft_printf("0 padding: %+08x, -width: %#-8x.", 42, 42));
@@ -14,7 +32,7 @@ int main()
 	ft_printf(" = %d\n", ft_printf("0 padding: %+8u, -width: %#-8u.", -42, 42));
 	ft_printf(" = %d\n", ft_printf("0 padding: %8%, str=%s.", "42str"));
 	ft_printf(" = %d\n", ft_printf("0 padding: %08b.", 9));
-	ft_printf(" = %d\n", ft_printf("float    : %#.0f.", 42.0));
+	ft_printf(" = %d\n", ft_printf("float    : %#+05.0f.", 42.0));
 
 printf("========= by standard printf:\n");
 	printf(" = %d\n", printf("0 padding: %+08d, -width: %-8d.", 42, 42));
@@ -23,7 +41,7 @@ printf("========= by standard printf:\n");
 	printf(" = %d\n", printf("0 padding: %+8X, -width: %#-8X.", 42, 42));
 	printf(" = %d\n", printf("0 padding: %+8u, -width: %#-8u.", -42, 42));
 	printf(" = %d\n", printf("0 padding: %8%, str=%s.", "42str"));
-	printf(" = %d\n", printf("float    : %#.0f.", 42.0));
+	printf(" = %d\n", printf("float    : %#+05.0f.", 42.0));
 //	printf("\t\t- %d\n", ft_printf("Simple string."));
 //ft_printf("No number %d\n", 24);
 //ft_printf("Complex %d, %-3$d\n", 12, 24, 42);
