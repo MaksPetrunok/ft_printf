@@ -34,9 +34,9 @@ static void	print_prefix(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 		print_o(a, s, len, buffer);
 	else if (ft_strchr("fF", a->type))
 		print_f(a, s, len, buffer);
-	else if (ft_strchr("xX", a->type))
+	else if (ft_strchr("xpXb", a->type))
 		print_x(a, s, len, buffer);
-	else if (ft_strchr("ubs%", a->type))
+	else if (ft_strchr("us%", a->type))
 		print_u(a, s, len, buffer);
 //	else if (ft_strchr("cC%", a->type))
 //		return (printf_pr_c(a, s, len));

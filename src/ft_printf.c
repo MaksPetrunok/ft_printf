@@ -18,7 +18,7 @@
 #include "ft_printf.h"
 
 #include <stdio.h> //REMOVE ME
-#define PRINT_FLAGS
+//#define PRINT_FLAGS
 
 static void	initialize_fmarg(t_fmarg *arg)
 {

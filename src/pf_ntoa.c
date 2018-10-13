@@ -14,11 +14,10 @@
 
 void	pf_ulltoa_base(unsigned long long int n, int base, t_fmarg *fm, char *b)
 {
-	char	*symbols;
 	char	buff[NTOA_BUFF_SIZE];
-	int		i;
-	int		t;
+	
 
+	ft_ulltoa_base(n, , fm->type == 'X', buff);
 	t = 1;
 	i = NTOA_BUFF_SIZE - 1;
 	buff[i--] = '\0';

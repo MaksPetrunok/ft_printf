@@ -14,8 +14,8 @@
 
 #include <stdio.h> // remove me
 
-//#define uintmax_t __uintmax_t
-//#define intmax_t long
+#define uintmax_t __uintmax_t
+#define intmax_t long
 
 // sSpdDioOuUxXcC
 // pdDioOuUxX
@@ -58,16 +58,16 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 		val = (unsigned int)va_arg(*ap, int);
 
 	if (arg->type == 'o')
-		pf_ulltoa_base(val, 8, arg, buff);
+		ft_ulltoa_base(val, 8, 0, buff);
 	else if (arg->type == 'u')
-		pf_ulltoa_base(val, 10, arg, buff);
+		ft_ulltoa_base(val, 10, 0, buff);
 	else if (arg->type == 'x')
-		pf_ulltoa_base(val, 16, arg, buff);
+		ft_ulltoa_base(val, 16, 0, buff);
 	else if (arg->type == 'X')
-		pf_ulltoa_base(val, 16, arg, buff);
+		ft_ulltoa_base(val, 16, 1, buff);
 	else if (arg->type == 'b')
-		pf_ulltoa_base(val, 2, arg, buff);
-	printf(">>>>>>>>>>>>>>>>>>>>>>>>\n>>>>>>>>>>>>>>>>>> %s\n", buff);
+		ft_ulltoa_base(val, 2, 0, buff);
+//	printf(">>>>>>>>>>>>>>>>>>>>>>>>\n>>>>>>>>>>>>>>>>>> %s\n", buff);
 }
 
 void	arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff)

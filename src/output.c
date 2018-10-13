@@ -25,6 +25,22 @@ void	flush(t_outbuff *buff)
  * Otherwise n symbols from *str appended.
  */
 
+void	appendchr(t_outbuff *buff, const char c, int n)
+{
+	if (n == '\0')
+		return ;
+	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && n != 0)
+	{
+		*(buff->end++) = c;
+		n--;
+	}
+	if (n != 0)
+	{
+		flush(buff);
+		appendchr(buff, c, n);
+	}
+}
+
 void	append(t_outbuff *buff, const char *str, int n)
 {
 	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && *str && n != 0)

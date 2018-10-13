@@ -33,8 +33,8 @@ FILES = ft_printf.c \
 		print_arg.c \
 		arg_to_str_n.c \
 		print_nums.c \
-		pf_ntoa.c \
 		output.c
+#		pf_ntoa.c
 
 SRC_FILES = $(addprefix $(SRC_DIR), $(FILES))
 

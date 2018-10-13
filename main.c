@@ -6,6 +6,13 @@
 #define uintmax_t __uintmax_t
 //#define PRINT_SIZE
 
+void	test(char *fmt, int n)
+{
+	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n));
+	printf("\t-stdout   : %d\n", printf(fmt, n));
+	printf("-----------------------------\n");
+}
+
 int main()
 {
 	/*
@@ -20,10 +27,17 @@ int main()
 	printf("\nWritten bytes: %d\n", out.count);
 */
 
+//	test("%04u", 42);
+//	test("%+ d", 42);
+	char *s = "234";
+	test("%p", s);
+return 0;
+
+
+	return 0;
 
 	ft_printf("THOUSANDS TEST: %#'u\n", 42000);
-	ft_printf("STRING BEFORE ARGUMENT %llX", 4294967296);
-return 0;
+	ft_printf("STRING BEFORE ARGUMENT %llX\n", 4294967296);
 
 	ft_printf(" = %d\n", ft_printf("0 padding: %+08d, -width: %-8d.", 42, 42));
 	ft_printf(" = %d\n", ft_printf("0 padding: %+8o, -width: %#-8o.", 42, 42));

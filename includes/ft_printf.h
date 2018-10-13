@@ -48,7 +48,7 @@ struct	s_outbuff
 	int			count;
 	char		buffer[OUTPUT_BUFF_SIZE + 1];
 	char		*end;
-	void		(*flush)(t_outbuff *);
+	void		(*flush)(t_outbuff *); // try to remove these functions
 	void		(*append)(t_outbuff *, const char *, int n);
 };
 
@@ -62,6 +62,7 @@ typedef struct	s_fmarg
 
 void			flush(t_outbuff *buff);
 void			append(t_outbuff *buff, const char *str, int n);
+void			appendchr(t_outbuff *buff, const char c, int n);
 void			initialize_output_buff(t_outbuff *buff, int fd);
 
 int				ft_printf(const char *fmt, ...);
