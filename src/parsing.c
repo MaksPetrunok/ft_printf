@@ -34,6 +34,11 @@ static inline void	parse_length(char **str, t_fmarg *arg)
 		arg->type = ft_tolower(arg->type);
 		arg->flags |= F_LONG;
 	}
+	if (arg->type == 'p')
+	{
+		arg->type = 'x';
+		arg->flags |= F_HASH | F_LLONG;
+	}
 }
 
 static inline void	parse_w(char **s, t_fmarg *arg)
@@ -85,6 +90,7 @@ void				parse_flags(char **str, t_fmarg *arg)
 	{
 		if (**str == '.')
 		{
+			arg->flags |= F_PREC;
 			*str = *str + 1;
 			parse_p((str), arg);
 		}

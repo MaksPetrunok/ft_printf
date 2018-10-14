@@ -33,13 +33,14 @@
 # define F_SPACE	(1U << 3U)
 # define F_PLUS		(1U << 4U)
 # define F_THOU		(1U << 5U)
+# define F_PREC		(1U << 6U)
 
-# define F_CHAR		(1U << 6U)
-# define F_SHORT	(1U << 7U)
-# define F_LONG		(1U << 8U)
-# define F_LLONG	(1U << 9U)
-# define F_INTMAX	(1U << 10U)
-# define F_SIZE_T	(1U << 11U)
+# define F_CHAR		(1U << 7U)
+# define F_SHORT	(1U << 8U)
+# define F_LONG		(1U << 9U)
+# define F_LLONG	(1U << 10U)
+# define F_INTMAX	(1U << 11U)
+# define F_SIZE_T	(1U << 12U)
 
 typedef struct s_outbuff t_outbuff;
 struct	s_outbuff

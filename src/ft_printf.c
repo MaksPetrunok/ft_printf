@@ -51,6 +51,9 @@ static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 	print_arg(&arg, ap, buffer);
 }
 
+//IMPLEMENT HERE:
+//int			ft_dprintf(int fd, const char *fmt, ...) 
+
 int			ft_printf(const char *fmt, ...)
 {
 	va_list		ap;

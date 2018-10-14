@@ -6,6 +6,18 @@
 #define uintmax_t __uintmax_t
 //#define PRINT_SIZE
 
+void	test_p(char *fmt, void *n)
+{
+	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n));
+	printf("\t-stdout   : %d\n", printf(fmt, n));
+	printf("-----------------------------\n");
+}
+void	test_f(char *fmt, double n)
+{
+	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n));
+	printf("\t-stdout   : %d\n", printf(fmt, n));
+	printf("-----------------------------\n");
+}
 void	test(char *fmt, int n)
 {
 	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n));
@@ -15,6 +27,12 @@ void	test(char *fmt, int n)
 
 int main()
 {
+	int c = L'©';
+	char	cc = *(char *)(&c);
+	ft_printf("%b\n", c << 8);
+	return (0);
+
+	printf("MULTI BYTE: %d\n", MB_CUR_MAX);
 	/*
 	t_outbuff out;
 
@@ -30,7 +48,8 @@ int main()
 //	test("%04u", 42);
 //	test("%+ d", 42);
 	char *s = "234";
-	test("%p", s);
+//	test_f("%f", 0.0);
+	test_p("%-20.15p", s);
 return 0;
 
 

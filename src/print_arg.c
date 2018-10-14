@@ -17,9 +17,11 @@
 /*
 static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 {
-	if (arg->type == 's' && arg->lengthmod == 0)
-		*str = (char *)va_arg(*ap, char *);
-	if (arg->type == 'c' && arg->lengthmod == 0)
+	if (arg->type == 'c' && (arg->flags & F_LONG))
+		*str = va_arg(*ap, char *);
+	else if (arg->type == 'c')
+		*str = va_arg(*ap, char);
+	if (arg->type == 's')
 		*str = va_arg(*ap, char *);
 //	printf("!!!!!!!!!!!!! HERE !!!!!!!!!\n");
 //	printf("%s\n", *str)
@@ -55,7 +57,7 @@ void		print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer)
 	else if (ft_strchr("ouxXb", arg->type))
 		arg_to_str_ouxX(arg, ap, str = buff);
 	else if (ft_strchr("fF", arg->type))
-		arg_to_str_f(arg, ap, (str = buff));
+		arg_to_str_f(arg, ap, str = buff);
 	else
 		str = "%";
 	len = ft_strlen(str);

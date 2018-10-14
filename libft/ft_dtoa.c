@@ -62,7 +62,7 @@ void		ft_dtoa(double n, int precision, char *buff)
 //printf("INT NUM = %ld\n", integer);
 //printf("INT   = %s\n", s_int);
 //printf("FLOAT = %s\n", s_float);
-	ft_strcpy(buff, res);
+	ft_strcpy(buff, res); // replace with no heap usage, only stack
 //	while (res)
 //		*buff++ = *res++;
 //	*buff = '\0';

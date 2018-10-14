@@ -46,10 +46,10 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 		val = (unsigned char)va_arg(*ap, int);
 	else if (arg->flags & F_SHORT)
 		val = (unsigned short)va_arg(*ap, int);
-	else if (arg->flags & F_LONG)
-		val = (unsigned long)va_arg(*ap, unsigned long);
 	else if (arg->flags & F_LLONG)
 		val = (unsigned long long)va_arg(*ap, unsigned long long);
+	else if (arg->flags & F_LONG)
+		val = (unsigned long)va_arg(*ap, unsigned long);
 	else if (arg->flags & F_INTMAX)
 		val = (uintmax_t)va_arg(*ap, uintmax_t);
 	else if (arg->flags & F_SIZE_T)
@@ -67,17 +67,11 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 		ft_ulltoa_base(val, 16, 1, buff);
 	else if (arg->type == 'b')
 		ft_ulltoa_base(val, 2, 0, buff);
-//	printf(">>>>>>>>>>>>>>>>>>>>>>>>\n>>>>>>>>>>>>>>>>>> %s\n", buff);
 }
 
 void	arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff)
 {
-//printf("\nPRECISION = %d\n", arg->precision);
 	if (arg->precision == -1)
 		arg->precision = 6;
 	ft_dtoa((double)va_arg(*ap, double), arg->precision, buff);
-//printf("STRING VALUE = %s\n", buff);
-//printf("%f, %d, %s\n", va_arg(*ap, double), arg->precision, buff);
-//	else if (arg->type == 'p')
-//		ft_lltoa_base((long int)va_arg(*ap, int), 16, 0, buff);
 }
