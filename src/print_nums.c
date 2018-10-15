@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 18:25:10 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 19:06:31 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	print_f(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	int		n;
 
 	fill = (a->flags & F_ZERO) ? '0' : ' ';
-	//fill = ((a->flags & F_ZERO) && !(a->flags & F_PREC)) ? '0' : ' ';
 	a->width -= (*s == '-' || (a->flags & (F_PLUS | F_SPACE)));
 	len -= (*s == '-');
 	if (!(a->flags & F_LEFT) && fill == ' '
@@ -47,9 +46,10 @@ void	print_di(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
+	len -= (*s == '-');
+	len = (a->precision == 0 && *s == '0') ? 0 : len;
 	fill = ((a->flags & F_ZERO) && a->precision < 0) ? '0' : ' ';
 	a->width -= (*s == '-' || (a->flags & (F_PLUS | F_SPACE)));
-	len -= (*s == '-');
 	if (!(a->flags & F_LEFT) && fill == ' '
 		&& (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, ' ', n);
@@ -74,6 +74,7 @@ void	print_u(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
+	len = (a->precision == 0 && *s == 0) ? 0 : len;
 	fill = (a->flags & F_ZERO) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, (a->precision < 0) ? fill : ' ', n);
@@ -89,6 +90,7 @@ void	print_o(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
+	len = (a->precision == 0) ? 0 : len;
 	fill = ((a->flags & F_ZERO) && a->precision < 0) ? '0' : ' ';
 	a->width -= (a->flags & F_HASH);
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
@@ -107,13 +109,16 @@ void	print_x(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
+	len = (a->precision == 0) ? 0 : len;
 	fill = ((a->flags & F_ZERO) && a->precision < 0) ? '0' : ' ';
 	a->width -= (a->flags & F_HASH) * 2;
-	if (!(a->flags & F_LEFT) && fill == ' ' && (n = (a->width - (MAX(a->precision, len)))) > 0)
+	if (!(a->flags & F_LEFT) && fill == ' ' &&
+			(n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
-	if (a->flags & F_HASH)
+	if (a->flags & F_HASH && (*s != '0' || a->type == 'p'))
 		append(buffer, (a->type == 'X') ? "0X" : "0x", 2);
-	if (!(a->flags & F_LEFT) && fill == '0' && (n = (a->width - (MAX(a->precision, len)))) > 0)
+	if (!(a->flags & F_LEFT) && fill == '0' &&
+			(n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
 	if ((n = (a->precision - len)) > 0)
 		appendchr(buffer, '0', n);

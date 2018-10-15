@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "./includes/ft_printf.h"
 #include "./libft/libft.h"
+#include <locale.h>
 
 #define intmax_t long
 #define uintmax_t __uintmax_t
@@ -12,10 +13,10 @@ void	test_p(char *fmt, void *n)
 	printf("\t-stdout   : %d\n", printf(fmt, n));
 	printf("-----------------------------\n");
 }
-void	test_f(char *fmt, double n)
+void	test_f(char *fmt, int n, int m)
 {
-	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n));
-	printf("\t-stdout   : %d\n", printf(fmt, n));
+	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n, m));
+	printf("\t-stdout   : %d\n", printf(fmt, n, m));
 	printf("-----------------------------\n");
 }
 void	test(char *fmt, int n)
@@ -27,6 +28,18 @@ void	test(char *fmt, int n)
 
 int main()
 {
+setlocale(LC_ALL, "");
+	int ci = L'©';
+
+	test("%C", ci);
+
+
+
+
+
+
+
+return 0;
 	int c = L'©';
 	char	cc = *(char *)(&c);
 	ft_printf("%b\n", c << 8);

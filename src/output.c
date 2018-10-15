@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 16:37:56 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 18:03:38 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 21:30:11 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 
 void	flush(t_outbuff *buff)
 {
+//	printf("FLUSHING BUFFER:\n");
+//	printf("	BUFF:	%p\n", buff->buffer);
+//	printf("	END:	%p\n", buff->end);
 	buff->count += write(buff->fd, buff->buffer, buff->end - buff->buffer);
 	buff->end = buff->buffer;
 }
@@ -27,8 +30,6 @@ void	flush(t_outbuff *buff)
 
 void	appendchr(t_outbuff *buff, const char c, int n)
 {
-	if (n == '\0')
-		return ;
 	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && n != 0)
 	{
 		*(buff->end++) = c;
@@ -61,6 +62,18 @@ void	initialize_output_buff(t_outbuff *buff, int fd)
 	buff->count = 0;
 	buff->buffer[0] = '\0';
 	buff->end = buff->buffer;
-	buff->flush = &flush;
-	buff->append = &append;
+}
+
+void	appendnchr(t_outbuff *buff, const char *str, int n)
+{
+	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && n != 0)
+	{
+		*(buff->end++) = *str++;
+		n--;
+	}
+	if (*str && n != 0)
+	{
+		flush(buff);
+		append(buff, str, n);
+	}
 }

@@ -6,7 +6,7 @@
 #    By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/05 15:07:08 by mpetruno          #+#    #+#              #
-#    Updated: 2018/10/12 19:17:58 by mpetruno         ###   ########.fr        #
+#    Updated: 2018/10/15 15:00:16 by mpetruno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ FILES = ft_printf.c \
 		print_arg.c \
 		arg_to_str_n.c \
 		print_nums.c \
+		print_str.c \
 		output.c
 #		pf_ntoa.c
 

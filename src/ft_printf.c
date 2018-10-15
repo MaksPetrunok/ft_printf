@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 19:25:20 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 18:38:19 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 	printf("precision = %d\n", arg.precision);
 	printf("data type = %c\n======================\n", arg.type);
 #endif
-//printf("\nALL DATA PARSED\n");
 	print_arg(&arg, ap, buffer);
 }
 
@@ -62,15 +61,13 @@ int			ft_printf(const char *fmt, ...)
 
 	initialize_output_buff(&buffer, 1);
 	va_start(ap, fmt);
-//printf("String to be printed:\n%s\nArguments:\n", fmt);
+//printf(">>> FMT: %p\n", fmt);
 	while ((arg = ft_strchr(fmt, '%')))
 	{
 		if (fmt != arg)
 			append(&buffer, fmt, arg - fmt);
-//			count += write(1, fmt, ABS((fmt - arg)));
 		process_arg(&arg, &ap, &buffer);
 		fmt = arg;
-//printf("\nAFTER PARSING s = %s!!!\n", fmt);
 	}
 	append(&buffer, fmt, -1);
 	flush(&buffer);

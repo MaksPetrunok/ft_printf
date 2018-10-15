@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/03 13:27:00 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 19:12:01 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 21:29:41 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@
 typedef struct s_outbuff t_outbuff;
 struct	s_outbuff
 {
-	int			fd;
-	int			count;
-	char		buffer[OUTPUT_BUFF_SIZE + 1];
-	char		*end;
-	void		(*flush)(t_outbuff *); // try to remove these functions
-	void		(*append)(t_outbuff *, const char *, int n);
+	int					fd;
+	int					count;
+	unsigned char		buffer[OUTPUT_BUFF_SIZE + 1];
+	unsigned char		*end;
+//	void		(*flush)(t_outbuff *); // try to remove these functions
+//	void		(*append)(t_outbuff *, const char *, int n);
 };
 
 typedef struct	s_fmarg
@@ -63,6 +63,7 @@ typedef struct	s_fmarg
 
 void			flush(t_outbuff *buff);
 void			append(t_outbuff *buff, const char *str, int n);
+void			appendnchr(t_outbuff *buff, const char *str, int n);
 void			appendchr(t_outbuff *buff, const char c, int n);
 void			initialize_output_buff(t_outbuff *buff, int fd);
 
@@ -78,6 +79,8 @@ void			print_di(t_fmarg *a, char *s, int len, t_outbuff *buffer);
 void			print_u(t_fmarg *a, char *s, int len, t_outbuff *buffer);
 void			print_o(t_fmarg *a, char *s, int len, t_outbuff *buffer);
 void			print_x(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_c(t_fmarg *a, char *s, int len, t_outbuff *buffer);
+void			print_s(t_fmarg *a, char *s, int len, t_outbuff *buffer);
 
 void			pf_ulltoa_base(unsigned long long int n, int base,
 				t_fmarg *fm, char *buff);

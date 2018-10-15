@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:32:12 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 19:14:46 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 20:02:32 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 #include <stdio.h> // REMOVE ME
 
-static inline void	parse_length(char **str, t_fmarg *arg)
+static void	parse_length(char **str, t_fmarg *arg)
 {
+	if (**str == '\0')
+		return ;
 	if (**str == 'h')
 		arg->flags |= (*(*str + 1) == 'h') ? F_CHAR : F_SHORT;
 	else if (**str == 'l')
@@ -26,8 +28,16 @@ static inline void	parse_length(char **str, t_fmarg *arg)
 		arg->flags |= F_SIZE_T;
 	*str += ((arg->flags & (F_CHAR | F_LLONG)) > 0) * 2 +
 		((arg->flags & (F_SHORT | F_LONG | F_INTMAX | F_SIZE_T)) > 0);
+//printf("AFTER SIZE: %p\n", *str);
+}
 
-	arg->type = **str;
+static int	parse_type(char **str, t_fmarg *arg)
+{
+	if (**str == '\0' || ft_strchr(TYPES, **str) == 0)
+		return 0;
+		//arg->type = '\0';
+	else
+		arg->type = **str;
 	*str = *str + 1;
 	if (ft_strchr("DOUCS", arg->type) != 0)
 	{
@@ -35,27 +45,18 @@ static inline void	parse_length(char **str, t_fmarg *arg)
 		arg->flags |= F_LONG;
 	}
 	if (arg->type == 'p')
-	{
-		arg->type = 'x';
 		arg->flags |= F_HASH | F_LLONG;
-	}
+	return (1);
 }
 
-static inline void	parse_w(char **s, t_fmarg *arg)
+static void	parse_num(char **s, int *n)
 {
-	arg->width = ft_atoi(*s);
+	*n = ft_atoi(*s);
 	while (**s >= '0' && **s <= '9')
 		(*s)++;
 }
 
-static inline void	parse_p(char **s, t_fmarg *arg)
-{
-	arg->precision = ft_atoi(*s);
-	while (**s >= '0' && **s <= '9')
-		(*s)++;
-}
-
-static inline void	parse_fl(char **s, t_fmarg *arg)
+static void	parse_fl(char **s, t_fmarg *arg)
 {
 	if (**s == '#')
 		arg->flags |= F_HASH;
@@ -72,7 +73,7 @@ static inline void	parse_fl(char **s, t_fmarg *arg)
 	if ((**s == '0' || **s == '-') && *(*s + 1) >= '0' && *(*s + 1) <= '9')
 	{
 		*s = *s + 1;
-		parse_w(s, arg);
+		parse_num(s, &(arg->width));
 	}
 	else
 		(*s)++;
@@ -80,24 +81,30 @@ static inline void	parse_fl(char **s, t_fmarg *arg)
 
 void				parse_flags(char **str, t_fmarg *arg)
 {
-	char	*tmp;
+//	char	*tmp;
 	char	*fl;
 
 	fl = FLAGS;
-	while ((tmp = ft_strchr(fl, **str)) != 0 ||
-		(**str >= '0' && **str <= '9') ||
-		**str == '.')
+//	while (**str && ((tmp = ft_strchr(fl, **str)) != 0 ||
+//		(**str >= '0' && **str <= '9') ||
+//		**str == '.'))
+	while (**str && arg->type == 0)
 	{
 		if (**str == '.')
 		{
 			arg->flags |= F_PREC;
 			*str = *str + 1;
-			parse_p((str), arg);
+			parse_num(str, &(arg->precision));
 		}
 		else if (**str >= '1' && **str <= '9')
-			parse_w(str, arg);
-		else
+			parse_num(str, &(arg->width));
+		else if (ft_strchr(fl, **str) != 0)
 			parse_fl(str, arg);
+		else
+			parse_length(str, arg);
+		if (parse_type(str, arg))
+			break ;
 	}
-	parse_length(str, arg);
+//printf(">>>AFTER FLAGS: %p\n", *str);
+//	parse_length(str, arg);
 }

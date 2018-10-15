@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/12 19:19:57 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/15 21:40:42 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 #include <stdio.h> // remove me
 
-#define uintmax_t __uintmax_t
-#define intmax_t long
+//#define uintmax_t __uintmax_t
+//#define intmax_t long
 
 // sSpdDioOuUxXcC
 // pdDioOuUxX
@@ -42,26 +42,25 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 {
 	unsigned long long	val;
 
-	if (arg->flags & F_CHAR)
-		val = (unsigned char)va_arg(*ap, int);
-	else if (arg->flags & F_SHORT)
-		val = (unsigned short)va_arg(*ap, int);
-	else if (arg->flags & F_LLONG)
+	if (arg->flags & F_LLONG)
 		val = (unsigned long long)va_arg(*ap, unsigned long long);
 	else if (arg->flags & F_LONG)
 		val = (unsigned long)va_arg(*ap, unsigned long);
-	else if (arg->flags & F_INTMAX)
-		val = (uintmax_t)va_arg(*ap, uintmax_t);
 	else if (arg->flags & F_SIZE_T)
 		val = (size_t)va_arg(*ap, size_t);
+	else if (arg->flags & F_INTMAX)
+		val = (uintmax_t)va_arg(*ap, uintmax_t);
+	else if (arg->flags & F_SHORT)
+		val = (unsigned short)va_arg(*ap, int);
+	else if (arg->flags & F_CHAR)
+		val = (unsigned char)va_arg(*ap, int);
 	else
 		val = (unsigned int)va_arg(*ap, int);
-
 	if (arg->type == 'o')
 		ft_ulltoa_base(val, 8, 0, buff);
 	else if (arg->type == 'u')
 		ft_ulltoa_base(val, 10, 0, buff);
-	else if (arg->type == 'x')
+	else if (arg->type == 'x' || arg->type == 'p')
 		ft_ulltoa_base(val, 16, 0, buff);
 	else if (arg->type == 'X')
 		ft_ulltoa_base(val, 16, 1, buff);
@@ -71,7 +70,6 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 
 void	arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff)
 {
-	if (arg->precision == -1)
-		arg->precision = 6;
-	ft_dtoa((double)va_arg(*ap, double), arg->precision, buff);
+	ft_dtoa((double)va_arg(*ap, double),
+			!(arg->flags & F_PREC) ? 6 : arg->precision, buff);
 }

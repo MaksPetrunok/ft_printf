@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <locale.h>
 
-#include "ft_printf/includes/ft_printf.h"
+#include "includes/ft_printf.h"
 
 int main()
 {
@@ -23,17 +23,18 @@ int main()
 	}
 	else if (c >= 0x80 && c <= 0xFF)
 	{
-		u[0] = 128+64 | (c >> 6);
-		u[1] = 128 | c - ((c >> 6) << 6);
+		u[0] = (128+64) | (c >> 6);
+		u[1] = 128 | (c - ((c >> 6) << 6));
 		len = 2;
 	}
-	write(1, u, len);
-	
-	ft_printf("\nsrc:	%b\n1:	%b\n2:	%b\n", c, u[0], u[1]);
+	printf("%d, %d\n", u[0], u[1]);
+	printf("WRITTEN BYTES: %ld\n", write(1, u, len));
+ft_printf("%8b-%8b\n", u[0], u[1]);	
+//	ft_printf("\nsrc:	%b\n1:	%b\n2:	%b\n", c, u[0], u[1]);
 
 
-setlocale(LC_ALL, "");
-	printf("\nprintf: %C\n", c);
+//setlocale(LC_ALL, "");
+//	printf("\nprintf: %C\n", c);
 
 
 
