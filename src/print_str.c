@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 15:31:23 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 21:29:52 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/17 19:06:47 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	print_c(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
-	len = ((a->flags & F_PREC) && a->precision < len) ?
-		a->precision : len;
 	fill = (a->flags & F_ZERO && !(a->flags & F_PREC)) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
@@ -50,4 +48,6 @@ void	print_s(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	append(buffer, s, len);
 	if (a->flags & F_LEFT && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, ' ', n);
+	if (a->flags & F_LONG)
+		free((void *)s);
 }

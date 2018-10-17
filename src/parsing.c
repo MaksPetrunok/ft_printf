@@ -6,18 +6,15 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:32:12 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 20:02:32 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/17 15:30:25 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
 #include <stdio.h> // REMOVE ME
 
-static void	parse_length(char **str, t_fmarg *arg)
+static char	parse_length(char **str, t_fmarg *arg)
 {
-	if (**str == '\0')
-		return ;
 	if (**str == 'h')
 		arg->flags |= (*(*str + 1) == 'h') ? F_CHAR : F_SHORT;
 	else if (**str == 'l')
@@ -26,16 +23,17 @@ static void	parse_length(char **str, t_fmarg *arg)
 		arg->flags |= F_INTMAX;
 	else if (**str == 'z')
 		arg->flags |= F_SIZE_T;
+	else
+		return (0);
 	*str += ((arg->flags & (F_CHAR | F_LLONG)) > 0) * 2 +
 		((arg->flags & (F_SHORT | F_LONG | F_INTMAX | F_SIZE_T)) > 0);
-//printf("AFTER SIZE: %p\n", *str);
+	return (1);
 }
 
-static int	parse_type(char **str, t_fmarg *arg)
+static char	parse_type(char **str, t_fmarg *arg)
 {
 	if (**str == '\0' || ft_strchr(TYPES, **str) == 0)
 		return 0;
-		//arg->type = '\0';
 	else
 		arg->type = **str;
 	*str = *str + 1;
@@ -49,14 +47,15 @@ static int	parse_type(char **str, t_fmarg *arg)
 	return (1);
 }
 
-static void	parse_num(char **s, int *n)
+static char	parse_num(char **s, int *n)
 {
 	*n = ft_atoi(*s);
 	while (**s >= '0' && **s <= '9')
 		(*s)++;
+	return (1);
 }
 
-static void	parse_fl(char **s, t_fmarg *arg)
+static char	parse_fl(char **s, t_fmarg *arg)
 {
 	if (**s == '#')
 		arg->flags |= F_HASH;
@@ -70,6 +69,8 @@ static void	parse_fl(char **s, t_fmarg *arg)
 		arg->flags |= F_PLUS;
 	else if (**s == '\'')
 		arg->flags |= F_THOU;
+	else
+		return (0);
 	if ((**s == '0' || **s == '-') && *(*s + 1) >= '0' && *(*s + 1) <= '9')
 	{
 		*s = *s + 1;
@@ -77,34 +78,32 @@ static void	parse_fl(char **s, t_fmarg *arg)
 	}
 	else
 		(*s)++;
+	return (1);
 }
 
 void				parse_flags(char **str, t_fmarg *arg)
 {
-//	char	*tmp;
 	char	*fl;
+	char	cont;
 
 	fl = FLAGS;
-//	while (**str && ((tmp = ft_strchr(fl, **str)) != 0 ||
-//		(**str >= '0' && **str <= '9') ||
-//		**str == '.'))
+	cont = 1;
 	while (**str && arg->type == 0)
 	{
+		cont = 0;
 		if (**str == '.')
 		{
 			arg->flags |= F_PREC;
 			*str = *str + 1;
-			parse_num(str, &(arg->precision));
+			cont = parse_num(str, &(arg->precision));
 		}
 		else if (**str >= '1' && **str <= '9')
-			parse_num(str, &(arg->width));
+			cont = parse_num(str, &(arg->width));
 		else if (ft_strchr(fl, **str) != 0)
-			parse_fl(str, arg);
+			cont = parse_fl(str, arg);
 		else
-			parse_length(str, arg);
-		if (parse_type(str, arg))
+			cont = parse_length(str, arg);
+		if (parse_type(str, arg) || !cont)
 			break ;
 	}
-//printf(">>>AFTER FLAGS: %p\n", *str);
-//	parse_length(str, arg);
 }

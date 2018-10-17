@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 19:06:31 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/17 19:17:48 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	print_u(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
-	len = (a->precision == 0 && *s == 0) ? 0 : len;
+	len = (a->precision == 0 && *s == '0') ? 0 : len;
 	fill = (a->flags & F_ZERO) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, (a->precision < 0) ? fill : ' ', n);
@@ -92,10 +92,10 @@ void	print_o(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 
 	len = (a->precision == 0) ? 0 : len;
 	fill = ((a->flags & F_ZERO) && a->precision < 0) ? '0' : ' ';
-	a->width -= (a->flags & F_HASH);
+	a->width -= ((a->flags & F_HASH) && *s != '0');
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
-	if (a->flags & F_HASH)
+	if (a->flags & F_HASH && *s != '0')
 		appendchr(buffer, '0', 1);
 	if ((n = (a->precision - len)) > 0)
 		appendchr(buffer, '0', n);

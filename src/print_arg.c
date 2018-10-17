@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 21:39:02 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/17 18:25:09 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,55 @@
 
 #include <stdio.h>
 
-static void	wchar_to_str(wchar_t c, char *s)
+static int	wchar_to_str(wchar_t c, char *s)
 {
-	if (c >= 0 && c <= 0x7F)
+	int	i;
+
+	i = 0;
+	if ((c >= 0 && c <= 0x7F) || MB_CUR_MAX == 1)
 	{
-		s[0] = (char)c;
-		s[1] = 0;
+		s[i++] = (char)c;
 	}
-	else if (c >= 0x80 && c <= 0xFF)
+	else if (c <= 0x7FF && MB_CUR_MAX >= 2)
 	{
-		s[0] = (128 + 64) | (c >> 6);
-		s[1] = 128 | c - ((c >> 6) << 6);
-		s[2] = 0;
+		s[i++] = 0xC0 | (c >> 6);
+		s[i++] = 0x80 | (0x3F & c);
 	}
+	else if (c <= 0xFFFF && MB_CUR_MAX >= 3)
+	{
+		s[i++] = 0xE0 | (c >> 12);
+		s[i++] = 0x80 | (0x3F & (c >> 6));
+		s[i++] = 0x80 | (0x3F & c);
+	}
+	else if (c <= 0x1FFFFF && MB_CUR_MAX >= 4)
+	{
+		s[i++] = 0xF0 | (c >> 18);
+		s[i++] = 0x80 | (0x3F & (c >> 12));
+		s[i++] = 0x80 | (0x3F & (c >> 6));
+		s[i++] = 0x80 | (0x3F & c);
+	}
+	s[i] = '\0';
+	return (i);
+}
+
+static char	*wstr_to_str(wchar_t *ws)
+{
+	char	*s;
+	size_t	i;
+
+	i = 0;
+	if (ws == 0)
+		return (0);
+	while (ws[i])
+		i++;
+	s = (char *)malloc(i * (MIN(MB_CUR_MAX, 4)) + 1);
+	if (s == 0)
+		return (0);
+	i = 0;
+	while (*ws)
+		i += wchar_to_str(*ws++, s + i);
+	s[i] = '\0';
+	return (s);
 }
 
 static void	arg_to_str_c(t_fmarg *arg, va_list *ap, char *str)
@@ -43,7 +79,7 @@ static void	arg_to_str_c(t_fmarg *arg, va_list *ap, char *str)
 static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 {
 	if (arg->type == 's' && (arg->flags & F_LONG))
-		*str = va_arg(*ap, char *);
+		*str = wstr_to_str(va_arg(*ap, wchar_t *));
 	else if (arg->type == 's')
 		*str = va_arg(*ap, char *);
 }
