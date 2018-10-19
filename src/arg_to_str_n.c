@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 18:53:07 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:28:46 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff)
 		ft_lltoa_base(va_arg(*ap, int), 10, 0, buff);
 }
 
-void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
+void	arg_to_str_oux(t_fmarg *arg, va_list *ap, char *buff)
 {
 	unsigned long long	val;
 
@@ -71,5 +71,5 @@ void	arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff)
 void	arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff)
 {
 	ft_dtoa((double)va_arg(*ap, double),
-			!(arg->flags & F_PREC) ? 6 : arg->precision, buff);
+		!(arg->flags & F_PREC) ? 6 : arg->precision, buff);
 }

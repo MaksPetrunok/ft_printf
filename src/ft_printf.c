@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 12:35:34 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 18:38:19 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:07:30 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 	printf("fl sp = %d\n", arg.flags & F_SPACE);
 	printf("fl -  = %d\n", arg.flags & F_LEFT);
 	printf("fl '  = %d\n", arg.flags & F_THOU);
+	printf("fl hh = %d\n", arg.flags & F_CHAR);
+	printf("fl l  = %d\n", arg.flags & F_LONG);
+
 	printf("width = %d\n", arg.width);
 	printf("precision = %d\n", arg.precision);
 	printf("data type = %c\n======================\n", arg.type);
@@ -50,8 +53,26 @@ static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 	print_arg(&arg, ap, buffer);
 }
 
-//IMPLEMENT HERE:
-//int			ft_dprintf(int fd, const char *fmt, ...) 
+int			ft_dprintf(int fd, const char *fmt, ...)
+{
+	va_list		ap;
+	char		*arg;
+	t_outbuff	buffer;
+
+	initialize_output_buff(&buffer, fd);
+	va_start(ap, fmt);
+	while ((arg = ft_strchr(fmt, '%')))
+	{
+		if (fmt != arg)
+			append(&buffer, fmt, arg - fmt);
+		process_arg(&arg, &ap, &buffer);
+		fmt = arg;
+	}
+	append(&buffer, fmt, -1);
+	flush(&buffer);
+	va_end(ap);
+	return (buffer.count);
+}
 
 int			ft_printf(const char *fmt, ...)
 {
@@ -61,7 +82,6 @@ int			ft_printf(const char *fmt, ...)
 
 	initialize_output_buff(&buffer, 1);
 	va_start(ap, fmt);
-//printf(">>> FMT: %p\n", fmt);
 	while ((arg = ft_strchr(fmt, '%')))
 	{
 		if (fmt != arg)

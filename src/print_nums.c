@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 19:17:48 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 18:21:16 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ void	print_o(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
-	len = (a->precision == 0) ? 0 : len;
+	len = (a->precision == 0 && !(a->flags & F_HASH)) ? 0 : len;
 	fill = ((a->flags & F_ZERO) && a->precision < 0) ? '0' : ' ';
-	a->width -= ((a->flags & F_HASH) && *s != '0');
+	a->width -= ((a->flags & F_HASH));
+	a->precision -= ((a->flags & F_HASH));
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
 	if (a->flags & F_HASH && *s != '0')

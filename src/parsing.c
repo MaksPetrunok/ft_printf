@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:32:12 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 15:30:25 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:20:46 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,22 @@
 
 static char	parse_length(char **str, t_fmarg *arg)
 {
+	int	lenmod;
+
+	lenmod = 0;
 	if (**str == 'h')
-		arg->flags |= (*(*str + 1) == 'h') ? F_CHAR : F_SHORT;
+		lenmod |= (*(*str + 1) == 'h') ? F_CHAR : F_SHORT;
 	else if (**str == 'l')
-		arg->flags |= (*(*str + 1) == 'l') ? F_LLONG : F_LONG;
+		lenmod |= (*(*str + 1) == 'l') ? F_LLONG : F_LONG;
 	else if (**str == 'j')
-		arg->flags |= F_INTMAX;
+		lenmod |= F_INTMAX;
 	else if (**str == 'z')
-		arg->flags |= F_SIZE_T;
+		lenmod |= F_SIZE_T;
 	else
 		return (0);
-	*str += ((arg->flags & (F_CHAR | F_LLONG)) > 0) * 2 +
-		((arg->flags & (F_SHORT | F_LONG | F_INTMAX | F_SIZE_T)) > 0);
+	*str += ((lenmod & (F_CHAR | F_LLONG)) > 0) * 2 +
+		((lenmod & (F_SHORT | F_LONG | F_INTMAX | F_SIZE_T)) > 0);
+	arg->flags |= lenmod;
 	return (1);
 }
 
@@ -105,5 +109,10 @@ void				parse_flags(char **str, t_fmarg *arg)
 			cont = parse_length(str, arg);
 		if (parse_type(str, arg) || !cont)
 			break ;
+	}
+	if (arg->type == '\0' && **str)
+	{
+		arg->type = **str;
+		*str += 1;
 	}
 }

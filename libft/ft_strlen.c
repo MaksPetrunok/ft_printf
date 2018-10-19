@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 16:00:10 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/06/18 18:55:07 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:07:46 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 size_t	ft_strlen(const char *s)
 {
-	size_t	n;
+	char	*p;
 
-	n = 0;
-	while (s[n])
-		n++;
-	return (n);
+	p = (char *)s;
+	while (*p)
+		p++;
+	return (p - s);
 }

@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 16:37:56 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/15 21:30:11 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 14:52:20 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	append(t_outbuff *buff, const char *str, int n)
 	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && *str && n != 0)
 	{
 		*(buff->end++) = *str++;
+//if (*str <= 0b01111111 || ((*str >> 6) & 0b00000011))
 		n--;
 	}
 	if (*str && n != 0)

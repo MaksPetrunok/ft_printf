@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 19:38:45 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/10 14:24:11 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 19:47:52 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int	get_float_str(double n, char *buff, int precision)
 	int		i;
 
 	i = 0;
+	n = (n < 0) ? -n : n;
 	buff[i++] = (precision == 0) ? '\0' : '.';
 	while (precision > 0)
 	{
@@ -50,7 +51,7 @@ void		ft_dtoa(double n, int precision, char *buff)
 	char		*res;
 
 	precision = (precision < 0) ? 0 : precision;
-	integer = (long int)(int)n;
+	integer = (long int)n;
 //printf("PASSED ARG = %f\n", n);
 	if (get_float_str(n - (double)integer, s_float, precision))
 		integer++;

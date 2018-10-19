@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 15:31:23 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 19:06:47 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 18:25:29 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	print_c(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	char	fill;
 	int		n;
 
-	fill = (a->flags & F_ZERO && !(a->flags & F_PREC)) ? '0' : ' ';
+	if (*s == '\0')
+		a->precision = -1;
+	fill = (a->flags & F_ZERO) ? '0' : ' ';
+	//fill = (a->flags & F_ZERO && a->precision == -1) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
 	if ((n = (a->precision - len)) > 0 && a->width != 0)
@@ -35,17 +38,23 @@ void	print_s(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 
 	if (s == 0)
 	{
-		append(buffer, "(null)", 6);
-		return ;
+		s = "(null)";
+		len = ft_strlen(s);
+		a->precision = (a->flags & F_PREC) ? 0 : a->precision;
+		a->flags = (a->flags & F_LONG) ? a->flags ^ F_LONG : a->flags;
+		a->flags = (a->flags & F_PREC) ? a->flags ^ F_PREC : a->flags;
 	}
-	len = ((a->flags & F_PREC) && a->precision < len) ?
+	len = (a->precision >= 0 && a->precision < len) ?
 		a->precision : len;
-	fill = (a->flags & F_ZERO && !(a->flags & F_PREC)) ? '0' : ' ';
-	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
+	a->precision = (*s == 0) ? 0 : a->precision;
+	fill = (a->flags & F_ZERO) ? '0' : ' ';
+	//fill = (a->flags & F_ZERO && !(a->flags & F_PREC)) ? '0' : ' ';
+	if (!(a->flags & F_LEFT) && (n = (a->width - len)) > 0)
 		appendchr(buffer, fill, n);
-	if ((n = (a->precision - len)) > 0 && a->width != 0)
+	if (*s == '\0' && (n = (a->precision - len)) > 0 && a->width != 0)
 		appendchr(buffer, ' ', n);
-	append(buffer, s, len);
+	if (len > 0)
+		append(buffer, s, len);
 	if (a->flags & F_LEFT && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, ' ', n);
 	if (a->flags & F_LONG)

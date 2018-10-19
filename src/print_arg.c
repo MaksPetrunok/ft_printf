@@ -6,13 +6,12 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 18:25:09 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:10:32 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-#include <stdio.h>
+#include <stdio.h> // remove
 
 static int	wchar_to_str(wchar_t c, char *s)
 {
@@ -45,22 +44,31 @@ static int	wchar_to_str(wchar_t c, char *s)
 	return (i);
 }
 
-static char	*wstr_to_str(wchar_t *ws)
+static char	*wstr_to_str(wchar_t *ws, t_fmarg *fm)
 {
 	char	*s;
-	size_t	i;
+	int		i;
+	int		added;
 
 	i = 0;
 	if (ws == 0)
 		return (0);
 	while (ws[i])
 		i++;
-	s = (char *)malloc(i * (MIN(MB_CUR_MAX, 4)) + 1);
-	if (s == 0)
+	added = ((fm->precision >= 0) ?
+			fm-> precision + 4 : (i * (MIN(MB_CUR_MAX, 4))));
+	if ((s = (char *)malloc(added + 1)) == 0)
 		return (0);
 	i = 0;
 	while (*ws)
-		i += wchar_to_str(*ws++, s + i);
+	{
+		added = wchar_to_str(*ws++, s + i);
+		if (!(fm->flags & F_PREC) || 
+				((fm->flags & F_PREC) && i + added <= fm->precision))
+			i += added;
+		else
+			break ;
+	}
 	s[i] = '\0';
 	return (s);
 }
@@ -79,7 +87,7 @@ static void	arg_to_str_c(t_fmarg *arg, va_list *ap, char *str)
 static void	arg_to_str_s(t_fmarg *arg, va_list *ap, char **str)
 {
 	if (arg->type == 's' && (arg->flags & F_LONG))
-		*str = wstr_to_str(va_arg(*ap, wchar_t *));
+		*str = wstr_to_str(va_arg(*ap, wchar_t *), arg);
 	else if (arg->type == 's')
 		*str = va_arg(*ap, char *);
 }
@@ -94,9 +102,9 @@ static void	print_prefix(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 		print_f(a, s, len, buffer);
 	else if (ft_strchr("xpXb", a->type))
 		print_x(a, s, len, buffer);
-	else if (ft_strchr("u%", a->type))
+	else if (ft_strchr("u", a->type))
 		print_u(a, s, len, buffer);
-	else if (ft_strchr("c", a->type))
+	else if (ft_strchr("c%", a->type))
 		print_c(a, s, MAX(1, len), buffer);
 	else if (ft_strchr("s", a->type))
 		print_s(a, s, len, buffer);
@@ -111,16 +119,23 @@ void		print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer)
 	if (arg->type == '\0')
 		return ;
 	str = "%";
-	if (ft_strchr("di", arg->type))
+	if (arg->type == 'd' || arg->type == 'i')
 		arg_to_str_di(arg, ap, (str = buff));
 	else if (ft_strchr("ouxXbp", arg->type))
-		arg_to_str_ouxX(arg, ap, str = buff);
-	else if (ft_strchr("fF", arg->type))
+		arg_to_str_oux(arg, ap, str = buff);
+	else if (arg->type == 'f' || arg->type == 'F')
 		arg_to_str_f(arg, ap, str = buff);
-	else if (ft_strchr("c", arg->type))
+	else if (arg->type == 'c')
 		arg_to_str_c(arg, ap, str = buff);
-	else if (ft_strchr("s", arg->type))
+	else if (arg->type == 's')
 		arg_to_str_s(arg, ap, &str);
-	len = (str) ? ft_strlen(str) : 0;
+	else if (ft_strchr(TYPES, arg->type) == 0)
+	{
+		buff[0] = arg->type;
+		buff[1] = '\0';
+		arg->type = 'c';
+		str = buff;
+	}
+	len = (str) ? ft_strlen(str) : 0; // remove ternar.op.
 	print_prefix(arg, str, len, buffer);
 }

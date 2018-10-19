@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/03 13:27:00 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/17 18:13:59 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/19 20:10:55 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				ft_printf(const char *fmt, ...);
 void			print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer);
 void			parse_flags(char **str, t_fmarg *arg);
 void			arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff);
-void			arg_to_str_ouxX(t_fmarg *arg, va_list *ap, char *buff);
+void			arg_to_str_oux(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff);
 
 void			print_f(t_fmarg *a, char *s, int len, t_outbuff *buffer);
