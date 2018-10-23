@@ -6,13 +6,11 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:34:39 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/19 20:28:46 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/23 14:04:42 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-#include <stdio.h> // remove me
 
 void	arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff)
 {
@@ -54,10 +52,8 @@ void	arg_to_str_oux(t_fmarg *arg, va_list *ap, char *buff)
 		ft_ulltoa_base(val, 8, 0, buff);
 	else if (arg->type == 'u')
 		ft_ulltoa_base(val, 10, 0, buff);
-	else if (arg->type == 'x' || arg->type == 'p')
-		ft_ulltoa_base(val, 16, 0, buff);
-	else if (arg->type == 'X')
-		ft_ulltoa_base(val, 16, 1, buff);
+	else if (ft_strchr("pxX", arg->type))
+		ft_ulltoa_base(val, 16, arg->type == 'X', buff);
 	else if (arg->type == 'b')
 		ft_ulltoa_base(val, 2, 0, buff);
 }

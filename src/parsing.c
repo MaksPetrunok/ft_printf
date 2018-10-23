@@ -6,12 +6,11 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 14:32:12 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/19 20:20:46 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/23 14:18:25 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h> // REMOVE ME
 
 static char	parse_length(char **str, t_fmarg *arg)
 {
@@ -37,7 +36,7 @@ static char	parse_length(char **str, t_fmarg *arg)
 static char	parse_type(char **str, t_fmarg *arg)
 {
 	if (**str == '\0' || ft_strchr(TYPES, **str) == 0)
-		return 0;
+		return (0);
 	else
 		arg->type = **str;
 	*str = *str + 1;
@@ -69,6 +68,8 @@ static char	parse_num(char **s, int *n, va_list *ap)
 
 static char	parse_fl(char **s, t_fmarg *arg)
 {
+	int	tmp;
+
 	if (**s == '#')
 		arg->flags |= F_HASH;
 	else if (**s == '0')
@@ -79,14 +80,14 @@ static char	parse_fl(char **s, t_fmarg *arg)
 		arg->flags |= F_SPACE;
 	else if (**s == '+')
 		arg->flags |= F_PLUS;
-	else if (**s == '\'')
-		arg->flags |= F_THOU;
-	else
-		return (0);
 	if ((**s == '0' || **s == '-') && *(*s + 1) >= '0' && *(*s + 1) <= '9')
 	{
-		*s = *s + 1;
-		parse_num(s, &(arg->width), 0);
+		(*s)++;
+		parse_num(s, &tmp, 0);
+		if (tmp > 0)
+			arg->width = tmp;
+		else
+			arg->flags &= (arg->flags & F_ZERO) ? ~F_ZERO : ~0;
 	}
 	else
 		(*s)++;
@@ -97,14 +98,12 @@ void		parse_flags(char **str, t_fmarg *arg, va_list *ap)
 {
 	char	cont;
 
-	cont = 1;
 	while (**str && arg->type == 0)
 	{
 		cont = 0;
 		if (**str == '.')
 		{
-//			arg->flags |= F_PREC;
-			*str = *str + 1;
+			(*str)++;
 			cont = parse_num(str, &(arg->precision), ap);
 		}
 		else if ((**str >= '1' && **str <= '9') || **str == '*')
@@ -117,14 +116,8 @@ void		parse_flags(char **str, t_fmarg *arg, va_list *ap)
 			break ;
 	}
 	if (arg->type == '\0' && **str)
-	{
-		arg->type = **str;
-		*str += 1;
-	}
-	if (arg->width < 0)
-	{
-		arg->flags |= F_LEFT;
-		arg->width = -arg->width;
-	}
+		arg->type = *(*str)++;
+	arg->flags |= (arg->width < 0) ? F_LEFT : 0;
+	arg->width = ABS(arg->width);
 	arg->flags |= (arg->precision >= 0) ? F_PREC : 0;
 }

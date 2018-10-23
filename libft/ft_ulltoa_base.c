@@ -6,7 +6,7 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 16:30:51 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/10 14:23:27 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/23 14:24:27 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,4 @@ void	ft_ulltoa_base(unsigned long long int n, int base, int capital, char *b)
 	while (buff[i])
 		*b++ = buff[i++];
 	*b = '\0';
-//	return (ft_strdup(&buff[i + 1]));
 }
-

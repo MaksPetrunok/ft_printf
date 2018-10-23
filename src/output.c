@@ -6,27 +6,17 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 16:37:56 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/19 14:52:20 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/23 13:41:44 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-#include <stdio.h> //remove
-
 void	flush(t_outbuff *buff)
 {
-//	printf("FLUSHING BUFFER:\n");
-//	printf("	BUFF:	%p\n", buff->buffer);
-//	printf("	END:	%p\n", buff->end);
 	buff->count += write(buff->fd, buff->buffer, buff->end - buff->buffer);
 	buff->end = buff->buffer;
 }
-
-/*
- * If n = -1 all string *str should be appended to buffer.
- * Otherwise n symbols from *str appended.
- */
 
 void	appendchr(t_outbuff *buff, const char c, int n)
 {
@@ -47,7 +37,6 @@ void	append(t_outbuff *buff, const char *str, int n)
 	while ((buff->end - buff->buffer) < OUTPUT_BUFF_SIZE && *str && n != 0)
 	{
 		*(buff->end++) = *str++;
-//if (*str <= 0b01111111 || ((*str >> 6) & 0b00000011))
 		n--;
 	}
 	if (*str && n != 0)

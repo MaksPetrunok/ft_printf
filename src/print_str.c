@@ -6,12 +6,11 @@
 /*   By: mpetruno <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/15 15:31:23 by mpetruno          #+#    #+#             */
-/*   Updated: 2018/10/19 18:25:29 by mpetruno         ###   ########.fr       */
+/*   Updated: 2018/10/23 14:05:14 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h> // remove me
 
 void	print_c(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 {
@@ -21,7 +20,6 @@ void	print_c(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 	if (*s == '\0')
 		a->precision = -1;
 	fill = (a->flags & F_ZERO) ? '0' : ' ';
-	//fill = (a->flags & F_ZERO && a->precision == -1) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - (MAX(a->precision, len)))) > 0)
 		appendchr(buffer, fill, n);
 	if ((n = (a->precision - len)) > 0 && a->width != 0)
@@ -48,7 +46,6 @@ void	print_s(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 		a->precision : len;
 	a->precision = (*s == 0) ? 0 : a->precision;
 	fill = (a->flags & F_ZERO) ? '0' : ' ';
-	//fill = (a->flags & F_ZERO && !(a->flags & F_PREC)) ? '0' : ' ';
 	if (!(a->flags & F_LEFT) && (n = (a->width - len)) > 0)
 		appendchr(buffer, fill, n);
 	if (*s == '\0' && (n = (a->precision - len)) > 0 && a->width != 0)
