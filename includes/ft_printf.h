@@ -9,6 +9,8 @@
 /*   Updated: 2018/10/19 20:10:55 by mpetruno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#define uintmax_t __uintmax_t // remove this
+#define intmax_t long         // remove this
 
 #include "../libft/libft.h"
 #include <stdarg.h>
@@ -70,7 +72,7 @@ void			initialize_output_buff(t_outbuff *buff, int fd);
 
 int				ft_printf(const char *fmt, ...);
 void			print_arg(t_fmarg *arg, va_list *ap, t_outbuff *buffer);
-void			parse_flags(char **str, t_fmarg *arg);
+void			parse_flags(char **str, t_fmarg *arg, va_list *ap);
 void			arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_oux(t_fmarg *arg, va_list *ap, char *buff);
 void			arg_to_str_f(t_fmarg *arg, va_list *ap, char *buff);

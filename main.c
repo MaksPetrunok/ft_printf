@@ -7,10 +7,10 @@
 #define uintmax_t __uintmax_t
 //#define PRINT_SIZE
 
-void	test(char *fmt, int n, int m)
+void	test(char *fmt, int n, int m, int k)
 {
-	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n, m));
-	printf("\t-stdout   : %d\n", printf(fmt, n, m));
+	ft_printf("\t-ft_printf: %d\n", ft_printf(fmt, n, m, k));
+	printf("\t-stdout   : %d\n", printf(fmt, n, m, k));
 	printf("-----------------------------\n");
 }
 
@@ -49,7 +49,7 @@ setlocale(LC_ALL, "");
 //	test_wstr("%S", L"我是一只猫。");
 
 //	test_wstr("{%05.s}", L"42 c est cool");
-test("%*d", 5, 42);
+test("%*.*d", 6, -0, 0);
 	//test("%f %F\n", -1.42, -1.42);
 //test("{%f}{%F}", 1444565444646.6465424242242, 1444565444646.6465424242242);
 return 0;

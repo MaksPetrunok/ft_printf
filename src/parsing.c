@@ -51,11 +51,19 @@ static char	parse_type(char **str, t_fmarg *arg)
 	return (1);
 }
 
-static char	parse_num(char **s, int *n)
+static char	parse_num(char **s, int *n, va_list *ap)
 {
-	*n = ft_atoi(*s);
-	while (**s >= '0' && **s <= '9')
+	if (**s == '*')
+	{
+		*n = va_arg(*ap, int);
 		(*s)++;
+	}
+	else
+	{
+		*n = ft_atoi(*s);
+		while (**s >= '0' && **s <= '9')
+			(*s)++;
+	}
 	return (1);
 }
 
@@ -78,32 +86,30 @@ static char	parse_fl(char **s, t_fmarg *arg)
 	if ((**s == '0' || **s == '-') && *(*s + 1) >= '0' && *(*s + 1) <= '9')
 	{
 		*s = *s + 1;
-		parse_num(s, &(arg->width));
+		parse_num(s, &(arg->width), 0);
 	}
 	else
 		(*s)++;
 	return (1);
 }
 
-void				parse_flags(char **str, t_fmarg *arg)
+void		parse_flags(char **str, t_fmarg *arg, va_list *ap)
 {
-	char	*fl;
 	char	cont;
 
-	fl = FLAGS;
 	cont = 1;
 	while (**str && arg->type == 0)
 	{
 		cont = 0;
 		if (**str == '.')
 		{
-			arg->flags |= F_PREC;
+//			arg->flags |= F_PREC;
 			*str = *str + 1;
-			cont = parse_num(str, &(arg->precision));
+			cont = parse_num(str, &(arg->precision), ap);
 		}
-		else if (**str >= '1' && **str <= '9')
-			cont = parse_num(str, &(arg->width));
-		else if (ft_strchr(fl, **str) != 0)
+		else if ((**str >= '1' && **str <= '9') || **str == '*')
+			cont = parse_num(str, &(arg->width), ap);
+		else if (ft_strchr(FLAGS, **str) != 0)
 			cont = parse_fl(str, arg);
 		else
 			cont = parse_length(str, arg);
@@ -115,4 +121,10 @@ void				parse_flags(char **str, t_fmarg *arg)
 		arg->type = **str;
 		*str += 1;
 	}
+	if (arg->width < 0)
+	{
+		arg->flags |= F_LEFT;
+		arg->width = -arg->width;
+	}
+	arg->flags |= (arg->precision >= 0) ? F_PREC : 0;
 }

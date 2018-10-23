@@ -41,8 +41,8 @@ void	print_s(t_fmarg *a, char *s, int len, t_outbuff *buffer)
 		s = "(null)";
 		len = ft_strlen(s);
 		a->precision = (a->flags & F_PREC) ? 0 : a->precision;
-		a->flags = (a->flags & F_LONG) ? a->flags ^ F_LONG : a->flags;
-		a->flags = (a->flags & F_PREC) ? a->flags ^ F_PREC : a->flags;
+		a->flags = (a->flags & F_LONG) ? a->flags ^ (int)F_LONG : a->flags;
+		a->flags = (a->flags & F_PREC) ? a->flags ^ (int)F_PREC : a->flags;
 	}
 	len = (a->precision >= 0 && a->precision < len) ?
 		a->precision : len;

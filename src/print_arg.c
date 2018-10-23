@@ -56,7 +56,7 @@ static char	*wstr_to_str(wchar_t *ws, t_fmarg *fm)
 	while (ws[i])
 		i++;
 	added = ((fm->precision >= 0) ?
-			fm-> precision + 4 : (i * (MIN(MB_CUR_MAX, 4))));
+			(fm->precision + 4) : (int)(i * (MIN(MB_CUR_MAX, 4))));
 	if ((s = (char *)malloc(added + 1)) == 0)
 		return (0);
 	i = 0;

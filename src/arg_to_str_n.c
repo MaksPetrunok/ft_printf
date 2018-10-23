@@ -14,12 +14,6 @@
 
 #include <stdio.h> // remove me
 
-//#define uintmax_t __uintmax_t
-//#define intmax_t long
-
-// sSpdDioOuUxXcC
-// pdDioOuUxX
-
 void	arg_to_str_di(t_fmarg *arg, va_list *ap, char *buff)
 {
 	if (arg->flags & F_LLONG)

@@ -34,7 +34,7 @@ static void	process_arg(char **str, va_list *ap, t_outbuff *buffer)
 
 	*str = *str + 1;
 	initialize_fmarg(&arg);
-	parse_flags(str, &arg);
+	parse_flags(str, &arg, ap);
 #ifdef PRINT_FLAGS
 	printf("\n===============\n");
 	printf("fl #  = %d\n", arg.flags & F_HASH);
